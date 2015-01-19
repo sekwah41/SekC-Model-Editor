@@ -1,5 +1,7 @@
 package com.sekwah.modeleditor.assets;
 
+import com.sekwah.modeleditor.files.Downloader;
+import com.sekwah.modeleditor.files.Unpacker;
 import com.sekwah.modeleditor.windows.MainMenu;
 import com.sekwah.modeleditor.windows.ModelEditorWindow;
 import com.sekwah.modeleditor.windows.SplashScreen;
@@ -7,10 +9,14 @@ import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL12;
 
 import javax.imageio.ImageIO;
+import javax.swing.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 import static org.lwjgl.opengl.GL11.*;
 
@@ -31,6 +37,7 @@ public class Assets {
 	public static int currentTextureWidth = 0;
 	
 	public static BufferedImage[] Images = new BufferedImage[2];
+	private static String AppdataStorageLocation;
 
 
 	public static void loadResources(SplashScreen loadingScreen){
@@ -46,12 +53,63 @@ public class Assets {
 		loadingScreen.setProgress("Loading Resources...", 0.2F);
 		mainMenu = new MainMenu();
 		displayFavicon = Assets.convertToByteBuffer(Assets.favicon);
-		try {
-			Thread.sleep(400);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+
+		String OS = System.getProperty("os.name").toUpperCase();
+		if (OS.contains("WIN")){
+			AppdataStorageLocation = System.getenv("APPDATA") + File.separator + "SekC's Model Editor";
 		}
+		else if (OS.contains("MAC")){
+			AppdataStorageLocation = System.getProperty("user.home") + File.separator + "Library" + File.separator + "Application Support" + File.separator + "SekC's Model Editor";
+		}
+		else if (OS.contains("NUX")){
+			JOptionPane.showMessageDialog(Assets.splashScreen, "Sorry but the Linux operating system is not currently supported at the moment, we plan to add support soon though!\n\n" +
+					"If you are using Linux and would like the mod installer to work please contact sekwah41,\n" +
+					"we could not make it work because we couldnt find any Linux users to test it on\n" +
+					"so we need someone to be our tester!", "Operating system not currently supported!", JOptionPane.ERROR_MESSAGE);
+			System.exit(Assets.splashScreen.ABORT);
+		}
+		else{
+			JOptionPane.showMessageDialog(Assets.splashScreen, "You seem to be using some sort of odd operating system or your\n" +
+					"operating system hasn't been detected correctly.\n\n" +
+					"Please report this to sekwah41 along with the operating system you are using.", "What are you using?", JOptionPane.ERROR_MESSAGE);
+			System.exit(Assets.splashScreen.ABORT);
+		}
+
+		Executor exec = Executors.newSingleThreadExecutor();
+		exec.execute(new Runnable() {
+			public void run() {
+				/** this part is probably not needed but is being kept like this just in case
+				 if(new File(AppdataInstallLocation + File.separator + "versions" + File.separator + Version).exists()){
+				 try {
+				 DeleteFolder.main(AppdataInstallLocation + File.separator + "versions" + File.separator + Version);
+				 } catch (Exception e) {
+				 System.out.println("Delete error!");
+				 e.printStackTrace();
+				 }
+				 }*/
+
+				String fileLocation = null;
+
+				makeDir(AppdataStorageLocation);
+				makeDir(AppdataStorageLocation + File.separator + "libs");
+				makeDir(AppdataStorageLocation + File.separator + "natives");
+			}
+
+			private void makeDir(String dir) {
+				if(!new File(dir).exists()){new File(dir).mkdir();}
+
+			}});
+
+		exec.execute(new Thread(new Downloader("http://www.sekwah.com/resources/sekc-model-editor/lwjgl-jars.zip", AppdataStorageLocation + File.separator + "lwjgl-jars.zip", false)));
+		exec.execute(new Thread(new Downloader("http://www.sekwah.com/resources/sekc-model-editor/lwjgl-natives-win.zip", AppdataStorageLocation + File.separator + "lwjgl-natives-win.zip", false)));
+
+		exec.execute(new Thread(new Unpacker(AppdataStorageLocation + File.separator + "lwjgl-jars.zip", AppdataStorageLocation + File.separator + "libs")));
+		exec.execute(new Thread(new Unpacker(AppdataStorageLocation + File.separator + "lwjgl-natives-win.zip", AppdataStorageLocation + File.separator + "natives")));
+
+		System.setProperty("java.library.path", new File(AppdataStorageLocation + File.separator + "libs").getAbsolutePath());
+
+		System.setProperty("org.lwjgl.librarypath", new File(AppdataStorageLocation + File.separator + "natives").getAbsolutePath());
+
 		loadingScreen.setProgress("Loading Resources...", 0.4F);
 		modelEditorWindow = new ModelEditorWindow();
 		
