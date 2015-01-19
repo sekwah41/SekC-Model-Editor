@@ -28,9 +28,9 @@ public class ModelRenderer implements Runnable {
 	
 	public static ArrayList<ModelBlock> enviroBoxList = new ArrayList<ModelBlock>();
 	
-	public float camRotX = 0;
+	public float camRotX = 40;
 	
-	public float camRotY = 0;
+	public float camRotY = 40;
 	
 	public float camRotZ = 0; // may never be needed
 
@@ -42,15 +42,19 @@ public class ModelRenderer implements Runnable {
 
 	private static float xPosMoveTo = 0;
 
-	private static float yPosMoveTo = 0;
+	private static float yPosMoveTo = -10;
 
 	private static float zPosMoveTo = 0;
 
 	public static boolean isSlidingCamera = true;
 
-	public float camZoom = 6;
+	public float camZoom = 15;
 	
 	public float currentZoom = 6;
+
+	public static ModelBox selectedBox = null;
+
+	public boolean boxesSelected = true;
 
 	public ModelRenderer(Canvas lwjglCanvas) {
 		this.renderCanvas = lwjglCanvas;
@@ -91,11 +95,12 @@ public class ModelRenderer implements Runnable {
 		
 		ModelBox head = new ModelBox(null, "head", 8, 8, 8, -4, -8, -4, 0, 0);
 		head.setRotation(0F,0F,0F);
-		boxList.add(head);
 		
 		ModelBox headHelmet = new ModelBox(null, "helmet",8, 8, 8, -4, -8, -4, 32, 0, 0.5F);
 		headHelmet.setRotation(0F,0F,0F);
-		boxList.add(headHelmet);
+		// boxList.add(headHelmet);
+		head.addChild(headHelmet);
+		boxList.add(head);
 		
 		/**ModelBlock blockPlanks = new ModelBlock(null,16, 16, 16, -8, 0, -8, 0, 0);
 		blockPlanks.setWorldPos(0,0,0);
@@ -108,6 +113,10 @@ public class ModelRenderer implements Runnable {
 				enviroBoxList.add(blockPlanks);
 			}
 		}
+	}
+
+	public static void setSelectedBox(ModelBox box) {
+		selectedBox = box;
 	}
 
 	@Override
@@ -170,9 +179,9 @@ public class ModelRenderer implements Runnable {
 
 			if(isSlidingCamera){
 				if(Math.sqrt(Math.pow((camPosX - xPosMoveTo), 2) + Math.pow((camPosY - yPosMoveTo),2) + Math.pow((camPosZ - zPosMoveTo),2)) > 0.1F){
-					camPosX += (xPosMoveTo - camPosX) / 5;
-					camPosY += (yPosMoveTo - camPosY) / 5;
-					camPosZ += (zPosMoveTo - camPosZ) / 5;
+					camPosX += (xPosMoveTo - camPosX) / 7;
+					camPosY += (yPosMoveTo - camPosY) / 7;
+					camPosZ += (zPosMoveTo - camPosZ) / 7;
 				}
 				else{
 					isSlidingCamera = false;
@@ -283,9 +292,18 @@ public class ModelRenderer implements Runnable {
 			Assets.rebindTexture(modelTextureID);
 
 			for(ModelBox box: boxList){
+				if(selectedBox != null && box.name.equals(selectedBox.name)){
+					box.boxAlpha = 1F;
+				}
+				else if(selectedBox != null){
+					box.boxAlpha = 0.5F;
+				}
+				else{
+					box.boxAlpha = 1F;
+				}
 				box.render();
 			}
-			
+
 			Assets.rebindTexture(blockTextureID);
 			
 			for(ModelBlock box: enviroBoxList){
@@ -329,8 +347,8 @@ public class ModelRenderer implements Runnable {
 	}
 
 	public static void moveCameraTo(float xPos, float yPos, float zPos) {
-		xPosMoveTo = xPos;
-		yPosMoveTo = yPos;
+		xPosMoveTo = -xPos;
+		yPosMoveTo = -yPos;
 		zPosMoveTo = zPos;
 	}
 }

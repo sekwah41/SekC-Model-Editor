@@ -37,6 +37,8 @@ public class ModelBox {
 
 	public String name = "";
 
+	public float boxAlpha = 1.0f; // 1 is solid 0 is transparent
+
 	public ModelBox(ModelBox parent, String name, int xWidth, int yWidth, int zWidth, float xOffset, float yOffset, float zOffset, int xTextureOffset, int yTextureOffset){
 		this.parent = parent;
 		
@@ -98,7 +100,7 @@ public class ModelBox {
 		Point point8 = new Point(xOffset - sizeScaler,yOffset + yWidth + sizeScaler,zOffset + zWidth);
 		
 		// GL11.glColor4f(0.95f,0.95f,0.95f, 0.3F); for alpha too
-		GL11.glColor3f(0.95f,0.95f,0.95f);
+		GL11.glColor4f(0.95f, 0.95f, 0.95f, boxAlpha);
 		
 		GL11.glBegin(GL11.GL_QUADS);
 		GL11.glTexCoord2f((float) (xTextureOffset + zWidth + 0.01) / textureWidth, (float) (yTextureOffset + zWidth + 0.01) / textureHeight);
@@ -111,7 +113,7 @@ public class ModelBox {
 		GL11.glVertex3d(point4.xPos, point4.yPos, point4.zPos);
 		GL11.glEnd();
 		
-		GL11.glColor3f(0.9f,0.9f,0.9f);
+		GL11.glColor4f(0.9f, 0.9f, 0.9f, boxAlpha);
 		
 		GL11.glBegin(GL11.GL_QUADS);
 		GL11.glTexCoord2f((float) (xTextureOffset + zWidth - 0.01) / textureWidth, (float) (yTextureOffset + zWidth + 0.01) / textureHeight);
@@ -124,7 +126,7 @@ public class ModelBox {
 		GL11.glVertex3d(point4.xPos, point4.yPos, point4.zPos);
 		GL11.glEnd();
 		
-		GL11.glColor3f(0.87f,0.87f,0.87f);
+		GL11.glColor4f(0.87f, 0.87f, 0.87f, boxAlpha);
 		
 		GL11.glBegin(GL11.GL_QUADS);
 		GL11.glTexCoord2f((float) (xTextureOffset + zWidth + xWidth + 0.01) / textureWidth, (float) (yTextureOffset + zWidth + 0.01) / textureHeight);
@@ -137,7 +139,7 @@ public class ModelBox {
 		GL11.glVertex3d(point3.xPos, point3.yPos, point3.zPos);
 		GL11.glEnd();
 		
-		GL11.glColor3f(0.87f,0.87f,0.87f);
+		GL11.glColor4f(0.87f, 0.87f, 0.87f, boxAlpha);
 		
 		GL11.glBegin(GL11.GL_QUADS);
 		GL11.glTexCoord2f((float) (xTextureOffset + zWidth + 0.01) / textureWidth, (float) (yTextureOffset + zWidth + 0.01) / textureHeight);
@@ -150,7 +152,7 @@ public class ModelBox {
 		GL11.glVertex3d(point2.xPos, point2.yPos, point2.zPos);
 		GL11.glEnd();
 		
-		GL11.glColor3f(0.87f,0.87f,0.87f);
+		GL11.glColor4f(0.87f, 0.87f, 0.87f, boxAlpha);
 		
 		GL11.glBegin(GL11.GL_QUADS);
 		GL11.glTexCoord2f((float) (xTextureOffset + zWidth + xWidth + 0.01) / textureWidth, (float) (yTextureOffset + zWidth - 0.01) / textureHeight);
@@ -163,7 +165,7 @@ public class ModelBox {
 		GL11.glVertex3d(point4.xPos, point4.yPos, point4.zPos);
 		GL11.glEnd();
 		
-		GL11.glColor3f(0.83f,0.83f,0.83f);
+		GL11.glColor4f(0.83f, 0.83f, 0.83f, boxAlpha);
 		
 		GL11.glBegin(GL11.GL_QUADS);
 		GL11.glTexCoord2f((float) (xTextureOffset + zWidth * 2 + xWidth + 0.01) / textureWidth, (float) (yTextureOffset + zWidth + 0.01) / textureHeight);
@@ -184,6 +186,7 @@ public class ModelBox {
 		
 		GL11.glPushMatrix();
 		for(ModelBox box: childBoxes){
+			box.boxAlpha = boxAlpha;
 			box.render();
 		}
 		GL11.glPopMatrix();

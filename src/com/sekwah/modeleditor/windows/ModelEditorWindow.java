@@ -135,22 +135,34 @@ public class ModelEditorWindow extends JFrame implements ActionListener {
         
         JList boxList = new JList();
         boxList.setLayoutOrientation(JList.VERTICAL);
-        boxList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+        boxList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         boxList.setVisibleRowCount(-1);
         
         JScrollPane boxListScroller = new JScrollPane(boxList);
         boxListScroller.setPreferredSize(new Dimension(290, 90));
         
         editorPane.add(boxListScroller);
+
+        JButton unselectBox = new JButton("Unselect");
+        unselectBox.setPreferredSize(new Dimension(290, unselectBox.getPreferredSize().height + 4));
+        unselectBox.addActionListener(new ActionListener(){
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                       modelRender.setSelectedBox(null);
+                }
+        });
+        //newBox.setBorderPainted(false);
+
+        editorPane.add(unselectBox);
         
         JButton newBox = new JButton("New Box");
-        newBox.setPreferredSize(new Dimension(290 / 2, newBox.getPreferredSize().height + 4));
+        newBox.setPreferredSize(new Dimension(142, newBox.getPreferredSize().height + 4));
         //newBox.setBorderPainted(false);
         
         editorPane.add(newBox);
         
         JButton removeBox = new JButton("Delete Box");
-        removeBox.setPreferredSize(new Dimension(290 / 2, removeBox.getPreferredSize().height + 4));
+        removeBox.setPreferredSize(new Dimension(143, removeBox.getPreferredSize().height + 4));
         //newBox.setBorderPainted(false);
         
         editorPane.add(removeBox);
@@ -165,7 +177,7 @@ public class ModelEditorWindow extends JFrame implements ActionListener {
         }
         boxList.setModel(listModel);
         
-        boxList.addListSelectionListener(new ListSelectionHandler());
+        boxList.addListSelectionListener(new ListSelectionHandler(modelRender));
         
         this.setVisible(true);
         
