@@ -55,6 +55,7 @@ public class ModelRenderer implements Runnable {
 	public static ModelBox selectedBox = null;
 
 	public boolean boxesSelected = true;
+	private boolean hasSetMousePos = false;
 
 	public ModelRenderer(Canvas lwjglCanvas) {
 		this.renderCanvas = lwjglCanvas;
@@ -191,9 +192,20 @@ public class ModelRenderer implements Runnable {
 			if(Mouse.isInsideWindow()){
 				int x = Mouse.getX(); // will return the X coordinate on the Display.
 				int y = Mouse.getY();
-				
-				int dX = Mouse.getDX();
-				int dY = Mouse.getDY();
+
+				System.out.println(x);
+
+				int dX = 0;
+				int dY = 0;
+
+				if(hasSetMousePos) {
+					hasSetMousePos = false;
+				}
+				else{
+					dX = Mouse.getDX();
+					dY = Mouse.getDY();
+				}
+
 				
 				camZoom -= mouseWheel / 30;
 				
@@ -224,11 +236,29 @@ public class ModelRenderer implements Runnable {
 					//camPosx += (float) Mouse.getDX() / 16;
 
 					//camPosy -= (float) Mouse.getDY() / 16;
+
+					if(x == size.width - 1){
+						Mouse.setCursorPosition(x - size.width + 1,y);
+						hasSetMousePos = true;
+					}
+					else if(x == 0){
+						Mouse.setCursorPosition(x + size.width - 1,y);
+						hasSetMousePos = true;
+					}
 				}
 				else if(Mouse.isButtonDown(1)){
 					camRotX -= (float) dY / 4;
 					
 					camRotY -= (float) dX / 4;
+
+					if(x == size.width - 1){
+						Mouse.setCursorPosition(x - size.width + 1,y);
+						hasSetMousePos = true;
+					}
+					else if(x == 0){
+						Mouse.setCursorPosition(x + size.width - 1,y);
+						hasSetMousePos = true;
+					}
 				}
 				
 				
