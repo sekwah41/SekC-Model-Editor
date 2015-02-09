@@ -210,6 +210,48 @@ public class ModelRenderer implements Runnable {
 				int dX = 0;
 				int dY = 0;
 
+				if(Keyboard.isKeyDown(Keyboard.KEY_A)){
+					isSlidingCamera = false;
+					float multiplier = (currentZoom + 28F) / 30;
+					camPosX += (Math.cos(Math.toRadians(camRotY))) * ((float) 10 / 18) * multiplier;
+
+					camPosZ += (Math.sin(Math.toRadians(camRotY))) * ((float) 10 / 18) * multiplier;
+				}
+
+				if(Keyboard.isKeyDown(Keyboard.KEY_D)){
+					isSlidingCamera = false;
+					float multiplier = -(currentZoom + 28F) / 30;
+					camPosX += (Math.cos(Math.toRadians(camRotY))) * ((float) 10 / 18) * multiplier;
+
+					camPosZ += (Math.sin(Math.toRadians(camRotY))) * ((float) 10 / 18) * multiplier;
+				}
+
+				if(Keyboard.isKeyDown(Keyboard.KEY_W)){
+					isSlidingCamera = false;
+					float multiplier = -(currentZoom + 28F) / 30;
+
+					double verty = (Math.cos(Math.toRadians(camRotX + 90))) * ((float) 10 / 18) * multiplier;
+
+					camPosX += (Math.sin(Math.toRadians(camRotX + 90))) *  (Math.cos(Math.toRadians(camRotY + 90))) * ((float) 10 / 18) * multiplier;
+
+					camPosZ += (Math.sin(Math.toRadians(camRotX + 90))) * (Math.sin(Math.toRadians(camRotY + 90))) * ((float) 10 / 18) * multiplier;
+
+					camPosY -= verty;
+				}
+
+				if(Keyboard.isKeyDown(Keyboard.KEY_S)){
+					isSlidingCamera = false;
+					float multiplier = (currentZoom + 28F) / 30;
+
+					double verty = (Math.cos(Math.toRadians(camRotX + 90))) * ((float) 10 / 18) * multiplier;
+
+					camPosX += (Math.sin(Math.toRadians(camRotX + 90))) *  (Math.cos(Math.toRadians(camRotY + 90))) * ((float) 10 / 18) * multiplier;
+
+					camPosZ += (Math.sin(Math.toRadians(camRotX + 90))) * (Math.sin(Math.toRadians(camRotY + 90))) * ((float) 10 / 18) * multiplier;
+
+					camPosY -= verty;
+				}
+
 				if(hasSetMousePos) {
 					hasSetMousePos = false;
 				}
@@ -330,6 +372,12 @@ public class ModelRenderer implements Runnable {
 			GL11.glTranslatef(0, 0F, currentZoom);
 			
 			GL11.glTranslatef(camPosX, camPosY, camPosZ);
+
+			Assets.rebindTexture(blockTextureID);
+
+			for(ModelBlock box: enviroBoxList){
+				box.render();
+			}
 
 			Assets.rebindTexture(blockTextureID);
 
