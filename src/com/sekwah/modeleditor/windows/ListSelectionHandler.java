@@ -25,6 +25,11 @@ public class ListSelectionHandler implements ListSelectionListener {
 				modelRenderer.moveCameraTo(box.xPos, box.yPos, box.zPos);
 				modelRenderer.isSlidingCamera = true;
 				modelRenderer.setSelectedBox(box);
+				if(box != null){
+					ModelEditorWindow.xRotationSlider.setValue((int) (((box.xRotation) / 180) * 50 + 50));
+					ModelEditorWindow.yRotationSlider.setValue((int) (((box.yRotation) / 180) * 50 + 50));
+					ModelEditorWindow.zRotationSlider.setValue((int) (((box.zRotation) / 180) * 50 + 50));
+				}
 				break;
 			}
 		}

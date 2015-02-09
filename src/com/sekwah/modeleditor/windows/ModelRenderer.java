@@ -60,7 +60,7 @@ public class ModelRenderer implements Runnable {
 	public ModelRenderer(Canvas lwjglCanvas) {
 		this.renderCanvas = lwjglCanvas;
 		
-		ModelBox upperArmRight = new ModelBox(null, "rightArmUpper", 4, 6, 4, -3, -2, -2, 40, 16);
+		/**ModelBox upperArmRight = new ModelBox(null, "rightArmUpper", 4, 6, 4, -3, -2, -2, 40, 16);
 		upperArmRight.setPos(-5F,2F,0);
 		upperArmRight.setRotation(0F,0F,0F);
 		boxList.add(upperArmRight);
@@ -78,7 +78,17 @@ public class ModelRenderer implements Runnable {
 		ModelBox lowerArmLeft = new ModelBox(upperArmRight, "leftArmLower", 4, 6, 4, -2, 0, -2, 40, 22);
 		lowerArmLeft.setPos(1F,4F,0);
 		lowerArmLeft.setRotation(0F,0F,0F);
-		upperArmLeft.addChild(lowerArmLeft);
+		upperArmLeft.addChild(lowerArmLeft);*/
+
+		ModelBox armRight = new ModelBox(null, "rightArm", 4, 12, 4, -3, -2, -2, 40, 16);
+		armRight.setPos(-5F,2F,0);
+		armRight.setRotation(0F,0F,0F);
+		boxList.add(armRight);
+
+		ModelBox armLeft = new ModelBox(null, "leftArm", 4, 12, 4, -1, -2, -2, 40, 16);
+		armLeft.setPos(5F,2F,0);
+		armLeft.setRotation(0F,0F,0F);
+		boxList.add(armLeft);
 		
 		ModelBox legLeft = new ModelBox(null, "leftLeg", 4, 12, 4, -2, -0, -2, 0, 16);
 		legLeft.setPos(2F,12F,0);
@@ -118,6 +128,10 @@ public class ModelRenderer implements Runnable {
 
 	public static void setSelectedBox(ModelBox box) {
 		selectedBox = box;
+	}
+
+	public static ModelBox getSelectedBox() {
+		return selectedBox;
 	}
 
 	@Override
@@ -192,8 +206,6 @@ public class ModelRenderer implements Runnable {
 			if(Mouse.isInsideWindow()){
 				int x = Mouse.getX(); // will return the X coordinate on the Display.
 				int y = Mouse.getY();
-
-				System.out.println(x);
 
 				int dX = 0;
 				int dY = 0;
@@ -318,6 +330,12 @@ public class ModelRenderer implements Runnable {
 			GL11.glTranslatef(0, 0F, currentZoom);
 			
 			GL11.glTranslatef(camPosX, camPosY, camPosZ);
+
+			Assets.rebindTexture(blockTextureID);
+
+			for(ModelBlock box: enviroBoxList){
+				box.render();
+			}
 			
 			Assets.rebindTexture(modelTextureID);
 
@@ -331,12 +349,6 @@ public class ModelRenderer implements Runnable {
 				else{
 					box.boxAlpha = 1F;
 				}
-				box.render();
-			}
-
-			Assets.rebindTexture(blockTextureID);
-			
-			for(ModelBlock box: enviroBoxList){
 				box.render();
 			}
 			
