@@ -299,6 +299,15 @@ public class ModelRenderer implements Runnable {
 						Mouse.setCursorPosition(x + size.width - 1,y);
 						hasSetMousePos = true;
 					}
+
+                    if(y == size.height - 1){
+                        Mouse.setCursorPosition(x,y - size.height + 1);
+                        hasSetMousePos = true;
+                    }
+                    else if(y == 0){
+                        Mouse.setCursorPosition(x,y + size.height - 1);
+                        hasSetMousePos = true;
+                    }
 				}
 				else if(Mouse.isButtonDown(1)){
 					camRotX -= (float) dY / 4;
@@ -313,6 +322,15 @@ public class ModelRenderer implements Runnable {
 						Mouse.setCursorPosition(x + size.width - 1,y);
 						hasSetMousePos = true;
 					}
+
+                    if(y == size.height - 1){
+                        Mouse.setCursorPosition(x,y - size.height + 1);
+                        hasSetMousePos = true;
+                    }
+                    else if(y == 0){
+                        Mouse.setCursorPosition(x,y + size.height - 1);
+                        hasSetMousePos = true;
+                    }
 				}
 				
 				
@@ -387,9 +405,14 @@ public class ModelRenderer implements Runnable {
 			
 			Assets.rebindTexture(modelTextureID);
 
+			if(selectedBox != null){
+				selectedBox.boxAlpha = 1F;
+				selectedBox.render();
+			}
+
 			for(ModelBox box: boxList){
 				if(selectedBox != null && box.name.equals(selectedBox.name)){
-					box.boxAlpha = 1F;
+
 				}
 				else if(selectedBox != null){
 					box.boxAlpha = 0.5F;
