@@ -60,7 +60,7 @@ public class ModelRenderer implements Runnable {
 	public ModelRenderer(Canvas lwjglCanvas) {
 		this.renderCanvas = lwjglCanvas;
 		
-		/**ModelBox upperArmRight = new ModelBox(null, "rightArmUpper", 4, 6, 4, -3, -2, -2, 40, 16);
+		ModelBox upperArmRight = new ModelBox(null, "rightArmUpper", 4, 6, 4, -3, -2, -2, 40, 16);
 		upperArmRight.setPos(-5F,2F,0);
 		upperArmRight.setRotation(0F,0F,0F);
 		boxList.add(upperArmRight);
@@ -78,9 +78,9 @@ public class ModelRenderer implements Runnable {
 		ModelBox lowerArmLeft = new ModelBox(upperArmRight, "leftArmLower", 4, 6, 4, -2, 0, -2, 40, 22);
 		lowerArmLeft.setPos(1F,4F,0);
 		lowerArmLeft.setRotation(0F,0F,0F);
-		upperArmLeft.addChild(lowerArmLeft);*/
+		upperArmLeft.addChild(lowerArmLeft);
 
-		ModelBox armRight = new ModelBox(null, "rightArm", 4, 12, 4, -3, -2, -2, 40, 16);
+		/*ModelBox armRight = new ModelBox(null, "rightArm", 4, 12, 4, -3, -2, -2, 40, 16);
 		armRight.setPos(-5F,2F,0);
 		armRight.setRotation(0F,0F,0F);
 		boxList.add(armRight);
@@ -88,7 +88,7 @@ public class ModelRenderer implements Runnable {
 		ModelBox armLeft = new ModelBox(null, "leftArm", 4, 12, 4, -1, -2, -2, 40, 16);
 		armLeft.setPos(5F,2F,0);
 		armLeft.setRotation(0F,0F,0F);
-		boxList.add(armLeft);
+		boxList.add(armLeft);*/
 		
 		ModelBox legLeft = new ModelBox(null, "leftLeg", 4, 12, 4, -2, -0, -2, 0, 16);
 		legLeft.setPos(2F,12F,0);
@@ -145,7 +145,6 @@ public class ModelRenderer implements Runnable {
 			Display.setDisplayMode(new DisplayMode(size.width, size.height));
 
 			Display.setParent(renderCanvas);
-			Display.setVSyncEnabled(true);
 
 			Display.create();
 		}
@@ -186,7 +185,9 @@ public class ModelRenderer implements Runnable {
 				//GLU.gluPerspective(70, (float)size.width/size.height, 1f, 100);
 			//}
 
+
 			GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
+            //GL11.glClearColor(0, 0, 0, 1);
 			
 			int mouseWheel = Mouse.getDWheel();
 
@@ -397,24 +398,15 @@ public class ModelRenderer implements Runnable {
 				box.render();
 			}
 
-			Assets.rebindTexture(blockTextureID);
-
-			for(ModelBlock box: enviroBoxList){
-				box.render();
-			}
-			
 			Assets.rebindTexture(modelTextureID);
 
-			if(selectedBox != null){
+			/**if(selectedBox != null){
 				selectedBox.boxAlpha = 1F;
 				selectedBox.render();
-			}
+			}*/
 
 			for(ModelBox box: boxList){
-				if(selectedBox != null && box.name.equals(selectedBox.name)){
-
-				}
-				else if(selectedBox != null){
+				if(selectedBox != null){
 					box.boxAlpha = 0.5F;
 				}
 				else{
@@ -425,6 +417,10 @@ public class ModelRenderer implements Runnable {
 			
 			GL11.glPopMatrix();
 
+            /* Blur */
+            glAccum(GL_ACCUM, 0.03F);
+            glAccum(GL_RETURN, 1.0F);
+            glAccum(GL_LOAD, 0.97F);
 
 			/**GL11.glBegin(GL11.GL_QUADS);
 			GL11.glVertex2f(10, 10);

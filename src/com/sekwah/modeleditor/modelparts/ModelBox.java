@@ -2,6 +2,7 @@ package com.sekwah.modeleditor.modelparts;
 
 import com.sekwah.modeleditor.assets.Assets;
 import com.sekwah.modeleditor.assets.Point;
+import com.sekwah.modeleditor.windows.ModelRenderer;
 import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
@@ -77,6 +78,10 @@ public class ModelBox {
 		int textureWidth = Assets.currentTextureWidth;
 		
 		int textureHeight = Assets.currentTextureHeight;
+
+        if(ModelRenderer.getSelectedBox() == this){
+            boxAlpha = 1F;
+        }
 		
 		GL11.glPushMatrix();
 		
@@ -221,5 +226,8 @@ public class ModelBox {
 	public void addChild(ModelBox boxModel) {
 		childBoxes.add(boxModel);
 	}
+    public ArrayList<ModelBox> getChildren(){
+        return childBoxes;
+    }
 	
 }
