@@ -172,8 +172,8 @@ public class ModelRenderer implements Runnable {
 		GL11.glMatrixMode(GL11.GL_MODELVIEW);
 
 		GL11.glEnable(GL11.GL_DEPTH_TEST);
-		
-		
+
+		//glClearAccum(0.0f, 0.0f, 0.0f, 0.0f);
 
 		while (!Display.isCloseRequested())
 		{
@@ -187,6 +187,12 @@ public class ModelRenderer implements Runnable {
 
 
 			GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
+
+
+			//glAccum(GL_RETURN, 1.0F);
+
+			//glClear(GL_ACCUM_BUFFER_BIT);
+			//glAccum(GL_LOAD, 0.97F);
             //GL11.glClearColor(0, 0, 0, 1);
 			
 			int mouseWheel = Mouse.getDWheel();
@@ -293,20 +299,20 @@ public class ModelRenderer implements Runnable {
 					//camPosy -= (float) Mouse.getDY() / 16;
 
 					if(x == size.width - 1){
-						Mouse.setCursorPosition(x - size.width + 1,y);
+						Mouse.setCursorPosition(x - size.width + 4,y);
 						hasSetMousePos = true;
 					}
 					else if(x == 0){
-						Mouse.setCursorPosition(x + size.width - 1,y);
+						Mouse.setCursorPosition(x + size.width - 4,y);
 						hasSetMousePos = true;
 					}
 
                     if(y == size.height - 1){
-                        Mouse.setCursorPosition(x,y - size.height + 1);
+                        Mouse.setCursorPosition(x,y - size.height + 4);
                         hasSetMousePos = true;
                     }
                     else if(y == 0){
-                        Mouse.setCursorPosition(x,y + size.height - 1);
+                        Mouse.setCursorPosition(x,y + size.height - 4);
                         hasSetMousePos = true;
                     }
 				}
@@ -373,7 +379,7 @@ public class ModelRenderer implements Runnable {
 			GL11.glPushMatrix();
 
 			GLU.gluPerspective(70, (float)size.width/size.height, 1f, 1000);
-			
+
 			GL11.glViewport(0, 0, size.width, size.height);
 
 			//float xOffset = 0;
@@ -383,13 +389,13 @@ public class ModelRenderer implements Runnable {
 			GL11.glTranslatef(0, 0F, -31F);
 
 			GL11.glRotatef(180, 1, 0, 0);
-			
+
 			rotateCamera(camRotX,1,0,0,currentZoom);
-			
+
 			rotateCamera(camRotY,0,1,0,currentZoom);
-			
+
 			GL11.glTranslatef(0, 0F, currentZoom);
-			
+
 			GL11.glTranslatef(camPosX, camPosY, camPosZ);
 
 			Assets.rebindTexture(blockTextureID);
@@ -417,10 +423,8 @@ public class ModelRenderer implements Runnable {
 			
 			GL11.glPopMatrix();
 
-            /* Blur */
-            glAccum(GL_ACCUM, 0.03F);
-            glAccum(GL_RETURN, 1.0F);
-            glAccum(GL_LOAD, 0.97F);
+            /* Blur which kinda has failed so leave it for now */
+            //glAccum(GL_ACCUM, 0.7F);
 
 			/**GL11.glBegin(GL11.GL_QUADS);
 			GL11.glVertex2f(10, 10);
