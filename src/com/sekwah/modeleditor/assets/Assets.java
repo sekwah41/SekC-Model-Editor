@@ -6,7 +6,9 @@ import com.sekwah.modeleditor.windows.MainMenu;
 import com.sekwah.modeleditor.windows.ModelEditorWindow;
 import com.sekwah.modeleditor.windows.SplashScreen;
 import org.lwjgl.BufferUtils;
+import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
+import org.lwjgl.util.vector.Matrix4f;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -15,6 +17,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.nio.FloatBuffer;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
@@ -35,6 +38,10 @@ public class Assets {
 	public static int currentTextureHeight = 0;
 
 	public static int currentTextureWidth = 0;
+	
+	private static Matrix4f matrix = new Matrix4f();
+
+	private static FloatBuffer matrixData = BufferUtils.createFloatBuffer(16);
 	
 	public static BufferedImage[] Images = new BufferedImage[2];
 	private static String AppdataStorageLocation;
@@ -254,4 +261,15 @@ public class Assets {
 		
 		glBindTexture(GL_TEXTURE_2D, textureID); //Bind texture ID
 	}
+
+	public static Matrix4f getMatrix(int MatrixId){
+
+		GL11.glGetFloat(MatrixId, matrixData);
+
+		matrix.load(matrixData);
+
+		matrixData.flip();
+		return matrix;
+	}
+
 }

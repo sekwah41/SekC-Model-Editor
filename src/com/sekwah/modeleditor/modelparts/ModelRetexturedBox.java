@@ -5,60 +5,25 @@ import com.sekwah.modeleditor.assets.Point;
 import com.sekwah.modeleditor.windows.ModelRenderer;
 import org.lwjgl.opengl.GL11;
 
-import java.util.ArrayList;
+public class ModelRetexturedBox extends ModelBox {
 
-public class ModelBox {
-	
-	public boolean isMirrored = false;
-	
-	public ModelBox parent = null;
-	
-	protected int xWidth = 0;
-	protected int yWidth = 0;
-	protected int zWidth = 0;
-	
-	protected float yOffset = 0F;
-	protected float xOffset = 0F;
-	protected float zOffset = 0F;
-	
-	protected int xTextureOffset = 0;
-	protected int yTextureOffset = 0;
-	
-	public float xPos = 0;
-	public float yPos = 0;
-	public float zPos = 0;
-	
-	public float xRotation = 0;
-	public float yRotation = 0;
-	public float zRotation = 0;
-	
-	protected float sizeScaler = 0;
-	
-	protected ArrayList<ModelBox> childBoxes = new ArrayList<ModelBox>();
+	private int xTop = 0;
+	private int yTop = 0;
 
-	public String name = "";
+	private int xBot = 0;
+	private int yBot = 0;
 
-	public float boxAlpha = 1.0f; // 1 is solid 0 is transparent
+	public ModelRetexturedBox(ModelBox parent, String name, int xWidth, int yWidth, int zWidth, float xOffset, float yOffset, float zOffset, int xTextureOffset, int yTextureOffset, int xTop, int yTop, int xBot, int yBot){
+		super(parent, name, xWidth, yWidth, zWidth, xOffset, yOffset, zOffset, xTextureOffset, yTextureOffset);
+		this.xTop = xTop;
+		this.yTop = yTop;
 
-	public ModelBox(ModelBox parent, String name, int xWidth, int yWidth, int zWidth, float xOffset, float yOffset, float zOffset, int xTextureOffset, int yTextureOffset){
-		this.parent = parent;
-		
-		this.name  = name;
-
-		this.xWidth = xWidth;
-		this.yWidth = yWidth;
-		this.zWidth = zWidth;
-
-		this.xOffset = xOffset;
-		this.yOffset = yOffset;
-		this.zOffset = zOffset;
-
-		this.xTextureOffset = xTextureOffset;
-		this.yTextureOffset = yTextureOffset;
+		this.xBot = xBot;
+		this.yBot = yBot;
 	}
-	
-	public ModelBox(ModelBox parent, String name, int xWidth, int yWidth, int zWidth, float xOffset, float yOffset, float zOffset, int xTextureOffset, int yTextureOffset, float sizeScaler){
-		this(parent, name, xWidth, yWidth, zWidth, xOffset, yOffset, zOffset, xTextureOffset, yTextureOffset);
+
+	public ModelRetexturedBox(ModelRetexturedBox parent, String name, int xWidth, int yWidth, int zWidth, float xOffset, float yOffset, float zOffset, int xTextureOffset, int yTextureOffset, float sizeScaler, int xTop, int yTop, int xBot, int yBot){
+		this(parent, name, xWidth, yWidth, zWidth, xOffset, yOffset, zOffset, xTextureOffset, yTextureOffset, xTop, yTop, xBot, yBot);
 		
 		this.sizeScaler  = sizeScaler;
 	}
@@ -157,26 +122,26 @@ public class ModelBox {
 		GL11.glColor4f(0.87f, 0.87f, 0.87f, boxAlpha);
 		
 		GL11.glBegin(GL11.GL_QUADS);
-		GL11.glTexCoord2f((float) (xTextureOffset + zWidth + 0.01) / textureWidth, (float) (yTextureOffset + zWidth + 0.01) / textureHeight);
+		GL11.glTexCoord2f((float) (xTop + 0.01) / textureWidth, (float) (yTop + zWidth + 0.01) / textureHeight);
 		GL11.glVertex3d(point1.xPos, point1.yPos, point1.zPos);
-		GL11.glTexCoord2f((float) (xTextureOffset + zWidth + 0.01) / textureWidth, (float) (yTextureOffset + 0.01) / textureHeight);
+		GL11.glTexCoord2f((float) (xTop + 0.01) / textureWidth, (float) (yTop + 0.01) / textureHeight);
 		GL11.glVertex3d(point5.xPos, point5.yPos, point5.zPos);
-		GL11.glTexCoord2f((float) (xTextureOffset + zWidth + xWidth - 0.01) / textureWidth, (float) (yTextureOffset + 0.01) / textureHeight);
+		GL11.glTexCoord2f((float) (xTop + xWidth - 0.01) / textureWidth, (float) (yTop + 0.01) / textureHeight);
 		GL11.glVertex3d(point6.xPos, point6.yPos, point6.zPos);
-		GL11.glTexCoord2f((float) (xTextureOffset + zWidth + xWidth - 0.01) / textureWidth, (float) (yTextureOffset + zWidth - 0.01) / textureHeight);
+		GL11.glTexCoord2f((float) (xTop + xWidth - 0.01) / textureWidth, (float) (yTop + zWidth - 0.01) / textureHeight);
 		GL11.glVertex3d(point2.xPos, point2.yPos, point2.zPos);
 		GL11.glEnd();
 		
 		GL11.glColor4f(0.87f, 0.87f, 0.87f, boxAlpha);
-		
+
 		GL11.glBegin(GL11.GL_QUADS);
-		GL11.glTexCoord2f((float) (xTextureOffset + zWidth + xWidth + 0.01) / textureWidth, (float) (yTextureOffset + zWidth - 0.01) / textureHeight);
+		GL11.glTexCoord2f((float) (xBot + 0.01) / textureWidth, (float) (yBot + zWidth + 0.01) / textureHeight);
 		GL11.glVertex3d(point3.xPos, point3.yPos, point3.zPos);
-		GL11.glTexCoord2f((float) (xTextureOffset + zWidth + xWidth + 0.01) / textureWidth, (float) (yTextureOffset - 0.01) / textureHeight);
+		GL11.glTexCoord2f((float) (xBot + 0.01) / textureWidth, (float) (yBot + 0.01) / textureHeight);
 		GL11.glVertex3d(point7.xPos, point7.yPos, point7.zPos);
-		GL11.glTexCoord2f((float) (xTextureOffset + zWidth + xWidth * 2 - 0.01) / textureWidth, (float) (yTextureOffset + 0.01) / textureHeight);
+		GL11.glTexCoord2f((float) (xBot + xWidth - 0.01) / textureWidth, (float) (yBot + 0.01) / textureHeight);
 		GL11.glVertex3d(point8.xPos, point8.yPos, point8.zPos);
-		GL11.glTexCoord2f((float) (xTextureOffset + zWidth + xWidth * 2 - 0.01) / textureWidth, (float) (yTextureOffset + zWidth - 0.01) / textureHeight);
+		GL11.glTexCoord2f((float) (xBot + xWidth - 0.01) / textureWidth, (float) (yBot + zWidth - 0.01) / textureHeight);
 		GL11.glVertex3d(point4.xPos, point4.yPos, point4.zPos);
 		GL11.glEnd();
 		
@@ -215,43 +180,4 @@ public class ModelBox {
 		
 		GL11.glPopMatrix();
 	}
-	
-	public void setPos(float x, float f, float z) {
-		this.xPos = x;
-		this.yPos = f;
-		this.zPos = z;
-	}
-	
-	public void setRotation(float x, float y, float z) {
-		this.xRotation = x;
-		this.yRotation = y;
-		this.zRotation = z;
-	}
-	
-	public void setOffset(float x, float y, float z){
-		this.xOffset = x;
-		this.yOffset = y;
-		this.zOffset = z;
-	}
-	
-	public void setTextureOffset(int x, int y){
-		this.xTextureOffset = x;
-		this.yTextureOffset = y;
-	}
-
-	public void addChild(ModelBox boxModel) {
-		childBoxes.add(boxModel);
-	}
-    public ArrayList<ModelBox> getChildren(){
-        return childBoxes;
-    }
-
-    public void delete() {
-        if(parent != null){
-            parent.childBoxes.remove(this);
-        }
-        else{
-            ModelRenderer.boxList.remove(this);
-        }
-    }
 }

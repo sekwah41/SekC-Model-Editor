@@ -20,32 +20,34 @@ public class ListSelectionHandler implements ListSelectionListener {
 		JList list = (JList) e.getSource();
 		int currentIndex = list.getSelectedIndex();
 		modelRenderer.setSelectedBox(null);
-		for(ModelBox box :  modelRenderer.boxList){
-			if(box.name.equals(list.getSelectedValue().toString())){
-				modelRenderer.moveCameraTo(box.xPos, box.yPos, box.zPos);
-				modelRenderer.isSlidingCamera = true;
-				modelRenderer.setSelectedBox(box);
-				if(box != null){
-					ModelEditorWindow.xRotationSlider.setValue((int) (((box.xRotation) / 180) * 50 + 50));
-					ModelEditorWindow.yRotationSlider.setValue((int) (((box.yRotation) / 180) * 50 + 50));
-					ModelEditorWindow.zRotationSlider.setValue((int) (((box.zRotation) / 180) * 50 + 50));
-				}
-				break;
-			}
-            else{
-                ModelBox childBox = searchChildren(box.getChildren(), list.getSelectedValue().toString());
-                if(childBox != null){
-                    modelRenderer.moveCameraTo(childBox.xPos, childBox.yPos, childBox.zPos);
+        if(list.getSelectedValue() != null){
+            for(ModelBox box :  modelRenderer.boxList){
+                if(box.name.equals(list.getSelectedValue().toString())){
+
+                    modelRenderer.moveCameraTo(box.xPos, box.yPos, box.zPos);
                     modelRenderer.isSlidingCamera = true;
-                    modelRenderer.setSelectedBox(childBox);
-                    ModelEditorWindow.xRotationSlider.setValue((int) (((childBox.xRotation) / 180) * 50 + 50));
-                    ModelEditorWindow.yRotationSlider.setValue((int) (((childBox.yRotation) / 180) * 50 + 50));
-                    ModelEditorWindow.zRotationSlider.setValue((int) (((childBox.zRotation) / 180) * 50 + 50));
+                    modelRenderer.setSelectedBox(box);
+                    if(box != null){
+                        ModelEditorWindow.xRotationSlider.setValue((int) (((box.xRotation) / 180) * 50 + 50));
+                        ModelEditorWindow.yRotationSlider.setValue((int) (((box.yRotation) / 180) * 50 + 50));
+                        ModelEditorWindow.zRotationSlider.setValue((int) (((box.zRotation) / 180) * 50 + 50));
+                    }
                     break;
                 }
+                else{
+                    ModelBox childBox = searchChildren(box.getChildren(), list.getSelectedValue().toString());
+                    if(childBox != null){
+                        modelRenderer.moveCameraTo(childBox);
+                        modelRenderer.isSlidingCamera = true;
+                        modelRenderer.setSelectedBox(childBox);
+                        ModelEditorWindow.xRotationSlider.setValue((int) (((childBox.xRotation) / 180) * 50 + 50));
+                        ModelEditorWindow.yRotationSlider.setValue((int) (((childBox.yRotation) / 180) * 50 + 50));
+                        ModelEditorWindow.zRotationSlider.setValue((int) (((childBox.zRotation) / 180) * 50 + 50));
+                        break;
+                    }
+                }
             }
-		}
-
+        }
 	}
 
     

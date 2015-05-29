@@ -3,6 +3,7 @@ package com.sekwah.modeleditor.windows;
 import com.sekwah.modeleditor.assets.Assets;
 import com.sekwah.modeleditor.modelparts.ModelBlock;
 import com.sekwah.modeleditor.modelparts.ModelBox;
+import com.sekwah.modeleditor.modelparts.ModelRetexturedWithAngleBox;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
@@ -10,9 +11,12 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.GLU;
+import org.lwjgl.util.vector.Matrix4f;
+import org.lwjgl.util.vector.Vector3f;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import static org.lwjgl.opengl.GL11.*;
 
@@ -60,22 +64,22 @@ public class ModelRenderer implements Runnable {
 	public ModelRenderer(Canvas lwjglCanvas) {
 		this.renderCanvas = lwjglCanvas;
 		
-		ModelBox upperArmRight = new ModelBox(null, "rightArmUpper", 4, 6, 4, -3, -2, -2, 40, 16);
+		ModelBox upperArmRight = new ModelRetexturedWithAngleBox(null, "rightArmUpper", 4, 6, 4, -3, -2, -2, 40, 16, 44, 16, 44, 26);
 		upperArmRight.setPos(-5F,2F,0);
 		upperArmRight.setRotation(0F,0F,0F);
 		boxList.add(upperArmRight);
 		
-		ModelBox lowerArmRight = new ModelBox(upperArmRight, "rightArmLower", 4, 6, 4, -2, 0, -2, 40, 22);
+		ModelBox lowerArmRight = new ModelRetexturedWithAngleBox(upperArmRight, "rightArmLower", 4, 6, 4, -2, 0, -2, 40, 22, 44, 26, 48, 16);
 		lowerArmRight.setPos(-1F,4F,0);
 		lowerArmRight.setRotation(0F,0F,0F);
 		upperArmRight.addChild(lowerArmRight);
 		
-		ModelBox upperArmLeft = new ModelBox(null, "leftArmUpper", 4, 6, 4, -1, -2, -2, 40, 16);
+		ModelBox upperArmLeft = new ModelRetexturedWithAngleBox(null, "leftArmUpper", 4, 6, 4, -1, -2, -2, 40, 16, 44, 16, 44, 26);
 		upperArmLeft.setPos(5F,2F,0);
 		upperArmLeft.setRotation(0F,0F,0F);
 		boxList.add(upperArmLeft);
 		
-		ModelBox lowerArmLeft = new ModelBox(upperArmRight, "leftArmLower", 4, 6, 4, -2, 0, -2, 40, 22);
+		ModelBox lowerArmLeft = new ModelRetexturedWithAngleBox(upperArmLeft, "leftArmLower", 4, 6, 4, -2, 0, -2, 40, 22, 44, 26, 48, 16);
 		lowerArmLeft.setPos(1F,4F,0);
 		lowerArmLeft.setRotation(0F,0F,0F);
 		upperArmLeft.addChild(lowerArmLeft);
@@ -407,7 +411,7 @@ public class ModelRenderer implements Runnable {
 
 			for(ModelBox box: boxList){
 				if(selectedBox != null){
-					box.boxAlpha = 0.5F;
+					box.boxAlpha = 0.4F;
 				}
 				else{
 					box.boxAlpha = 1F;
@@ -458,6 +462,60 @@ public class ModelRenderer implements Runnable {
 	public static void moveCameraTo(float xPos, float yPos, float zPos) {
 		xPosMoveTo = -xPos;
 		yPosMoveTo = -yPos;
-		zPosMoveTo = zPos;
+		zPosMoveTo = -zPos;
+	}
+
+	public void moveCameraTo(ModelBox box) {
+		if(box.parent != null){
+			Matrix4f matrix = new Matrix4f();
+
+			ModelBox currentBox = box;
+			ArrayList<ModelBox> boxList = new ArrayList<ModelBox>();
+			//boxList.add(box);
+			while(currentBox.parent != null){
+				currentBox = currentBox.parent;
+				boxList.add(currentBox);
+			}
+			Collections.reverse(boxList);
+			for(ModelBox box2 : boxList){
+				matrix.translate(new Vector3f(box2.xPos, box2.yPos, box2.zPos));
+
+				matrix.rotate((float) Math.toRadians(box2.yRotation), new Vector3f(0, 1, 0));
+				matrix.rotate((float) Math.toRadians(box2.zRotation), new Vector3f(0, 0, 1));
+				matrix.rotate((float) Math.toRadians(box2.xRotation), new Vector3f(1, 0, 0));
+			}
+			xPosMoveTo = -(matrix.m00 * box.xPos + matrix.m10 * box.yPos + matrix.m20 * box.zPos + matrix.m30);
+			yPosMoveTo = -(matrix.m01 * box.xPos + matrix.m11 * box.yPos + matrix.m21 * box.zPos + matrix.m31);
+			zPosMoveTo = -(matrix.m02 * box.xPos + matrix.m12 * box.yPos + matrix.m22 * box.zPos + matrix.m32);
+
+
+			/*ModelBox currentBox = box;
+			GL11.glPushMatrix();
+			ArrayList<ModelBox> boxList = new ArrayList<ModelBox>();
+			boxList.add(currentBox);
+			while(currentBox.parent != null){
+				currentBox = currentBox.parent;
+				boxList.add(currentBox);
+			}
+			Collections.reverse(boxList);
+			System.out.println(boxList);
+			for(ModelBox box2 : boxList){
+				GL11.glTranslatef(box2.xPos, box2.yPos, box2.zPos);
+
+				GL11.glRotatef(box2.yRotation, 0, 1, 0);
+				GL11.glRotatef(box2.zRotation, 0, 0, 1);
+				GL11.glRotatef(box2.xRotation, 1, 0, 0);
+			}
+			Matrix4f matrix = Assets.getMatrix(GL11.GL_MODELVIEW_MATRIX);
+			xPosMoveTo = -(matrix.m00 * box.xPos + matrix.m10 * box.yPos + matrix.m20 * box.zPos);
+			yPosMoveTo = -(matrix.m01 * box.xPos + matrix.m11 * box.yPos + matrix.m21 * box.zPos);
+			zPosMoveTo = (matrix.m02 * box.xPos + matrix.m12 * box.yPos + matrix.m22 * box.zPos);
+			GL11.glPopMatrix();*/
+		}
+		else{
+			xPosMoveTo = -box.xPos;
+			yPosMoveTo = -box.yPos;
+			zPosMoveTo = -box.zPos;
+		}
 	}
 }

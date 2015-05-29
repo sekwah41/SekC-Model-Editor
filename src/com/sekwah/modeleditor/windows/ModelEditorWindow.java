@@ -34,6 +34,11 @@ public class ModelEditorWindow extends JFrame implements ActionListener {
 
     public ModelEditorWindow(){
 
+        // https://docs.oracle.com/javase/tutorial/uiswing/components/spinner.html
+
+        // http://stackoverflow.com/questions/3949382/jspinner-value-change-events
+        // https://docs.oracle.com/javase/tutorial/uiswing/components/spinner.html
+
         try {
             UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
 
@@ -183,7 +188,7 @@ public class ModelEditorWindow extends JFrame implements ActionListener {
         zRotationSlider.setPreferredSize(new Dimension(290, zRotationSlider.getPreferredSize().height));
         editorPane.add(zRotationSlider);
 
-        JList boxList = new JList();
+        final JList boxList = new JList();
         boxList.setLayoutOrientation(JList.VERTICAL);
         boxList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         boxList.setVisibleRowCount(-1);
@@ -198,7 +203,8 @@ public class ModelEditorWindow extends JFrame implements ActionListener {
         unselectBox.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e) {
-                modelRender.setSelectedBox(null);
+                ModelRenderer.setSelectedBox(null);
+                boxList.clearSelection();
             }
         });
         //newBox.setBorderPainted(false);
@@ -213,6 +219,20 @@ public class ModelEditorWindow extends JFrame implements ActionListener {
 
         JButton removeBox = new JButton("Delete Box");
         removeBox.setPreferredSize(new Dimension(143, removeBox.getPreferredSize().height + 4));
+        removeBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(ModelRenderer.getSelectedBox() != null){
+                    ModelRenderer.getSelectedBox().delete();
+                    DefaultListModel listModel = new DefaultListModel();
+
+                    listModel = addBoxesList(ModelRenderer.boxList, listModel);
+
+                    boxList.clearSelection();
+                    boxList.setModel(listModel);
+                }
+            }
+        });
         //newBox.setBorderPainted(false);
 
         editorPane.add(removeBox);
@@ -223,7 +243,7 @@ public class ModelEditorWindow extends JFrame implements ActionListener {
 
         DefaultListModel listModel = new DefaultListModel();
 
-        listModel = addBoxesList(modelRender.boxList, listModel);
+        listModel = addBoxesList(ModelRenderer.boxList, listModel);
 
         boxList.setModel(listModel);
 
@@ -231,7 +251,7 @@ public class ModelEditorWindow extends JFrame implements ActionListener {
 
         this.setVisible(true);
 
-        Thread renderer = new Thread((Runnable) modelRender);
+        Thread renderer = new Thread(modelRender);
         renderer.start();
 
         this.setLocationRelativeTo(null);
