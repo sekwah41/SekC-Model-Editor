@@ -214,6 +214,15 @@ public class ModelRenderer implements Runnable {
 				}
 			}
 
+			while(Keyboard.next()){
+				if(Keyboard.getEventKeyState()){
+					// KeyPressed if true
+					//if(Keyboard.getEventKey() == Keyboard.KEY_RETURN){
+
+					//}
+				}
+			}
+
 			if(Mouse.isInsideWindow()){
 				int x = Mouse.getX(); // will return the X coordinate on the Display.
 				int y = Mouse.getY();

@@ -21,12 +21,25 @@ public class ListSelectionHandler implements ListSelectionListener {
 		int currentIndex = list.getSelectedIndex();
 		modelRenderer.setSelectedBox(null);
         if(list.getSelectedValue() != null){
-            for(ModelBox box :  modelRenderer.boxList){
+            ModelBox box = ModelEditorWindow.findBox(list.getSelectedValue().toString());
+            if(box != null){
+                modelRenderer.moveCameraTo(box);
+                modelRenderer.isSlidingCamera = true;
+                modelRenderer.setSelectedBox(box);
+                ModelEditorWindow.nameBoxTextField.setEnabled(true);
+                ModelEditorWindow.nameBoxTextField.setText(box.name);
+                ModelEditorWindow.xRotationSlider.setValue((int) (((box.xRotation) / 180) * 50 + 50));
+                ModelEditorWindow.yRotationSlider.setValue((int) (((box.yRotation) / 180) * 50 + 50));
+                ModelEditorWindow.zRotationSlider.setValue((int) (((box.zRotation) / 180) * 50 + 50));
+            }
+            /*for(ModelBox box :  modelRenderer.boxList){
                 if(box.name.equals(list.getSelectedValue().toString())){
 
                     modelRenderer.moveCameraTo(box.xPos, box.yPos, box.zPos);
                     modelRenderer.isSlidingCamera = true;
                     modelRenderer.setSelectedBox(box);
+                    ModelEditorWindow.nameBoxTextField.setEnabled(true);
+                    ModelEditorWindow.nameBoxTextField.setText(box.name);
                     if(box != null){
                         ModelEditorWindow.xRotationSlider.setValue((int) (((box.xRotation) / 180) * 50 + 50));
                         ModelEditorWindow.yRotationSlider.setValue((int) (((box.yRotation) / 180) * 50 + 50));
@@ -40,13 +53,15 @@ public class ListSelectionHandler implements ListSelectionListener {
                         modelRenderer.moveCameraTo(childBox);
                         modelRenderer.isSlidingCamera = true;
                         modelRenderer.setSelectedBox(childBox);
+                        ModelEditorWindow.nameBoxTextField.setEnabled(true);
+                        ModelEditorWindow.nameBoxTextField.setText(childBox.name);
                         ModelEditorWindow.xRotationSlider.setValue((int) (((childBox.xRotation) / 180) * 50 + 50));
                         ModelEditorWindow.yRotationSlider.setValue((int) (((childBox.yRotation) / 180) * 50 + 50));
                         ModelEditorWindow.zRotationSlider.setValue((int) (((childBox.zRotation) / 180) * 50 + 50));
                         break;
                     }
                 }
-            }
+            }*/
         }
 	}
 

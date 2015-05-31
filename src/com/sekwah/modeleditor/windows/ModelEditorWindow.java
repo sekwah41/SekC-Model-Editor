@@ -1,5 +1,6 @@
 package com.sekwah.modeleditor.windows;
 
+import com.sekwah.modeleditor.assets.Assets;
 import com.sekwah.modeleditor.modelparts.ModelBox;
 
 import javax.imageio.ImageIO;
@@ -24,6 +25,8 @@ public class ModelEditorWindow extends JFrame implements ActionListener {
     public static JSlider xRotationSlider = null;
     public static JSlider yRotationSlider = null;
     public static JSlider zRotationSlider = null;
+    public static JTextField nameBoxTextField = null;
+    private JList boxList;
 
     private JPanel contentPane;
 
@@ -111,10 +114,37 @@ public class ModelEditorWindow extends JFrame implements ActionListener {
 
         editorPane.add(nameLabel);
 
-        JTextField nameBox = new JTextField("Box1");
-        nameBox.setSelectionColor(new Color(45,135,8));
-        nameBox.setPreferredSize(new Dimension(290, nameLabel.getPreferredSize().height + 4));
-        editorPane.add(nameBox);
+        nameBoxTextField = new JTextField("");
+        nameBoxTextField.setEnabled(false);
+        nameBoxTextField.setSelectionColor(new Color(45, 135, 8));
+        nameBoxTextField.setPreferredSize(new Dimension(290, nameLabel.getPreferredSize().height + 4));
+        nameBoxTextField.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                ModelBox box = findBox(ModelEditorWindow.nameBoxTextField.getText());
+                if(box == null){
+                    ModelRenderer.getSelectedBox().name = ModelEditorWindow.nameBoxTextField.getText();
+
+                    DefaultListModel listModel = new DefaultListModel();
+
+                    listModel = ModelEditorWindow.addBoxesList(ModelRenderer.boxList, listModel);
+                    // Have an array for selected indecies
+                    int selectedIndex = -1;
+                    if(!boxList.isSelectionEmpty()){
+                        selectedIndex = boxList.getSelectedIndex();
+                    }
+                    boxList.clearSelection();
+                    boxList.setModel(listModel);
+                    if(selectedIndex >= 0){
+                        boxList.setSelectedIndex(selectedIndex);
+                    }
+                }
+                else if(box != ModelRenderer.selectedBox){
+                    JOptionPane.showMessageDialog(Assets.modelEditorWindow, "There is already a box with the name: " + ModelEditorWindow.nameBoxTextField.getText());
+                }
+            }
+        });
+
+        editorPane.add(nameBoxTextField);
 
         JLabel xRotationLabel = new JLabel("Rot X");
         xRotationLabel.setForeground(new Color(255,255,255));
@@ -188,7 +218,7 @@ public class ModelEditorWindow extends JFrame implements ActionListener {
         zRotationSlider.setPreferredSize(new Dimension(290, zRotationSlider.getPreferredSize().height));
         editorPane.add(zRotationSlider);
 
-        final JList boxList = new JList();
+        boxList = new JList();
         boxList.setLayoutOrientation(JList.VERTICAL);
         boxList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         boxList.setVisibleRowCount(-1);
@@ -203,6 +233,8 @@ public class ModelEditorWindow extends JFrame implements ActionListener {
         unselectBox.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e) {
+                nameBoxTextField.setText("");
+                nameBoxTextField.setEnabled(false);
                 ModelRenderer.setSelectedBox(null);
                 boxList.clearSelection();
             }
@@ -213,6 +245,13 @@ public class ModelEditorWindow extends JFrame implements ActionListener {
 
         JButton newBox = new JButton("New Box");
         newBox.setPreferredSize(new Dimension(142, newBox.getPreferredSize().height + 4));
+        newBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // TODO add code to create a new box, resizing and moving is also needed. If a box is already selected then create new as child
+                //  or add new button to create child instead.
+            }
+        });
         //newBox.setBorderPainted(false);
 
         editorPane.add(newBox);
@@ -224,6 +263,8 @@ public class ModelEditorWindow extends JFrame implements ActionListener {
             public void actionPerformed(ActionEvent e) {
                 if(ModelRenderer.getSelectedBox() != null){
                     ModelRenderer.getSelectedBox().delete();
+                    nameBoxTextField.setText("");
+                    nameBoxTextField.setEnabled(false);
                     DefaultListModel listModel = new DefaultListModel();
 
                     listModel = addBoxesList(ModelRenderer.boxList, listModel);
@@ -267,7 +308,7 @@ public class ModelEditorWindow extends JFrame implements ActionListener {
     }
 
 
-    private DefaultListModel addBoxesList(ArrayList<ModelBox> children, DefaultListModel listModel) {
+    public static DefaultListModel addBoxesList(ArrayList<ModelBox> children, DefaultListModel listModel) {
         for(ModelBox box: children){
             listModel.addElement(box.name);
             addBoxesList(box.getChildren(), listModel);
@@ -285,9 +326,36 @@ public class ModelEditorWindow extends JFrame implements ActionListener {
         }
     }
 
+    public static ModelBox findBox(String name){
+        for(ModelBox box : ModelRenderer.boxList){
+            if(box.name.equals(name)){
+                return box;
+            }
+            else{
+                ModelBox childBox = searchChildren(box.getChildren(), name);
+                if(childBox != null){
+                    return childBox;
+                }
+            }
+        }
 
+        return null;
+    }
 
-
+    private static ModelBox searchChildren(ArrayList<ModelBox> children, String name){
+        for(ModelBox box : children){
+            if(box.name.equals(name)){
+                return box;
+            }
+            else{
+                ModelBox box2 = searchChildren(box.getChildren(),name);
+                if(box2 != null){
+                    return box2;
+                }
+            }
+        }
+        return null;
+    }
 
     @Override
     public void actionPerformed(ActionEvent arg0) {
