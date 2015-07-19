@@ -26,6 +26,12 @@ public class ModelEditorWindow extends JFrame implements ActionListener {
     public static JSlider yRotationSlider = null;
     public static JSlider zRotationSlider = null;
     public static JTextField nameBoxTextField = null;
+    public JSpinner xPosSpinner = null;
+    public JSpinner yPosSpinner = null;
+    public JSpinner zPosSpinner = null;
+    public JSpinner xSizeSpinner = null;
+    public JSpinner ySizeSpinner = null;
+    public JSpinner zSizeSpinner = null;
     private JList boxList;
 
     private JPanel contentPane;
@@ -145,6 +151,105 @@ public class ModelEditorWindow extends JFrame implements ActionListener {
         });
 
         editorPane.add(nameBoxTextField);
+
+        // TODO Add size and position boxes here
+        // TODO allow the position spinners to have smaller values than the set steps, also
+
+        // TODO add texture position boxes
+
+        JLabel posLabel = new JLabel("Position");
+        posLabel.setForeground(new Color(255, 255, 255));
+        posLabel.setPreferredSize(new Dimension(290, posLabel.getPreferredSize().height));
+
+        editorPane.add(posLabel);
+
+        SpinnerModel xSpinnerModel =
+                new SpinnerNumberModel(0, //initial value
+                        -999, //min
+                        999, //max
+                        1); // Step, so 1 up or 1 down
+        xPosSpinner = new JSpinner(xSpinnerModel);
+
+        xPosSpinner.setPreferredSize(new Dimension(93, xPosSpinner.getPreferredSize().height));
+
+        editorPane.add(xPosSpinner);
+
+        SpinnerModel ySpinnerModel =
+                new SpinnerNumberModel(0, //initial value
+                        -999, //min
+                        999, //max
+                        1); // Step, so 1 up or 1 down
+
+        yPosSpinner = new JSpinner(ySpinnerModel);
+
+        yPosSpinner.setPreferredSize(new Dimension(93, yPosSpinner.getPreferredSize().height));
+
+        editorPane.add(yPosSpinner);
+
+        SpinnerModel zSpinnerModel =
+                new SpinnerNumberModel(0, //initial value
+                        -999, //min
+                        999, //max
+                        1); // Step, so 1 up or 1 down
+
+        /*zPosSpinner.setModel(new SpinnerNumberModel(1, null, null, 1) { // Look at these and decide what it will
+        be, also see how to make it accept values with more dp but have a higher spinner value
+            @Override
+            public Object getNextValue() {
+                Object nextValue = super.getValue();
+                int x = Integer.valueOf(nextValue.toString())*2;
+                //Object o = x;
+                return x;
+            }
+        });*/
+
+        zPosSpinner = new JSpinner(zSpinnerModel);
+
+        zPosSpinner.setPreferredSize(new Dimension(93, zPosSpinner.getPreferredSize().height));
+
+        editorPane.add(zPosSpinner);
+
+        JLabel sizeLabel = new JLabel("Size");
+        sizeLabel.setForeground(new Color(255,255,255));
+        sizeLabel.setPreferredSize(new Dimension(290, sizeLabel.getPreferredSize().height));
+
+        editorPane.add(sizeLabel);
+
+        SpinnerModel xSpinnerModelSize =
+                new SpinnerNumberModel(0, //initial value
+                        -999, //min
+                        999, //max
+                        1); // Step, so 1 up or 1 down
+        xSizeSpinner = new JSpinner(xSpinnerModelSize);
+
+        xSizeSpinner.setPreferredSize(new Dimension(93, xSizeSpinner.getPreferredSize().height));
+
+        editorPane.add(xSizeSpinner);
+
+        SpinnerModel ySpinnerModelSize =
+                new SpinnerNumberModel(0, //initial value
+                        -999, //min
+                        999, //max
+                        1); // Step, so 1 up or 1 down
+
+        ySizeSpinner = new JSpinner(ySpinnerModelSize);
+
+        ySizeSpinner.setPreferredSize(new Dimension(93, ySizeSpinner.getPreferredSize().height));
+
+        editorPane.add(ySizeSpinner);
+
+        SpinnerModel zSpinnerModelSize =
+                new SpinnerNumberModel(0, //initial value
+                        -999, //min
+                        999, //max
+                        1); // Step, so 1 up or 1 down
+
+        zSizeSpinner = new JSpinner(zSpinnerModelSize);
+
+        zSizeSpinner.setPreferredSize(new Dimension(93, zSizeSpinner.getPreferredSize().height));
+
+        editorPane.add(zSizeSpinner);
+
 
         JLabel xRotationLabel = new JLabel("Rot X");
         xRotationLabel.setForeground(new Color(255,255,255));
