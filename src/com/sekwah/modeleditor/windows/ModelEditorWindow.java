@@ -167,7 +167,7 @@ public class ModelEditorWindow extends JFrame implements ActionListener {
                 new SpinnerNumberModel(0, //initial value
                         -999, //min
                         999, //max
-                        1); // Step, so 1 up or 1 down
+                        0.01); // Step, so 1 up or 1 down
         xPosSpinner = new JSpinner(xSpinnerModel);
 
         xPosSpinner.setPreferredSize(new Dimension(93, xPosSpinner.getPreferredSize().height));
@@ -178,11 +178,28 @@ public class ModelEditorWindow extends JFrame implements ActionListener {
                 new SpinnerNumberModel(0, //initial value
                         -999, //min
                         999, //max
-                        1); // Step, so 1 up or 1 down
+                        0.01); // Step, so 1 up or 1 down
 
         yPosSpinner = new JSpinner(ySpinnerModel);
 
         yPosSpinner.setPreferredSize(new Dimension(93, yPosSpinner.getPreferredSize().height));
+
+        // TODO add some way to change the jump scale and also make it put the values in correctly when the parts are selected, then the next part is texture offset
+        // Then finally adding blocks and not just removing them(remember make it so if something is selected it is parented to it if its created or make a new button)
+
+        yPosSpinner.addChangeListener(new ChangeListener() {
+
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                JSpinner source = (JSpinner)e.getSource();
+
+                if(ModelRenderer.selectedBox != null){
+                    ModelRenderer.selectedBox.yPos = (float) ((double) source.getValue());
+                }
+
+                //System.out.println(source.getValue());
+            }
+        });
 
         editorPane.add(yPosSpinner);
 
@@ -190,7 +207,7 @@ public class ModelEditorWindow extends JFrame implements ActionListener {
                 new SpinnerNumberModel(0, //initial value
                         -999, //min
                         999, //max
-                        1); // Step, so 1 up or 1 down
+                        0.01); // Step, so 1 up or 1 down
 
         /*zPosSpinner.setModel(new SpinnerNumberModel(1, null, null, 1) { // Look at these and decide what it will
         be, also see how to make it accept values with more dp but have a higher spinner value
@@ -217,8 +234,8 @@ public class ModelEditorWindow extends JFrame implements ActionListener {
 
         SpinnerModel xSpinnerModelSize =
                 new SpinnerNumberModel(0, //initial value
-                        -999, //min
-                        999, //max
+                        -999.00, //min
+                        999.00, //max
                         1); // Step, so 1 up or 1 down
         xSizeSpinner = new JSpinner(xSpinnerModelSize);
 
