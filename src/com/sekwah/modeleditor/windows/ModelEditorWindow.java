@@ -26,12 +26,12 @@ public class ModelEditorWindow extends JFrame implements ActionListener {
     public static JSlider yRotationSlider = null;
     public static JSlider zRotationSlider = null;
     public static JTextField nameBoxTextField = null;
-    public JSpinner xPosSpinner = null;
-    public JSpinner yPosSpinner = null;
-    public JSpinner zPosSpinner = null;
-    public JSpinner xSizeSpinner = null;
-    public JSpinner ySizeSpinner = null;
-    public JSpinner zSizeSpinner = null;
+    public static JSpinner xPosSpinner = null;
+    public static JSpinner yPosSpinner = null;
+    public static JSpinner zPosSpinner = null;
+    public static JSpinner xSizeSpinner = null;
+    public static JSpinner ySizeSpinner = null;
+    public static JSpinner zSizeSpinner = null;
     private JList boxList;
 
     private JPanel contentPane;
@@ -162,7 +162,7 @@ public class ModelEditorWindow extends JFrame implements ActionListener {
         posLabel.setPreferredSize(new Dimension(290, posLabel.getPreferredSize().height));
 
         editorPane.add(posLabel);
-
+        // TODO make custom spinner models or something to accept different decimal changes
         SpinnerModel xSpinnerModel =
                 new SpinnerNumberModel(0, //initial value
                         -999, //min
@@ -171,6 +171,20 @@ public class ModelEditorWindow extends JFrame implements ActionListener {
         xPosSpinner = new JSpinner(xSpinnerModel);
 
         xPosSpinner.setPreferredSize(new Dimension(93, xPosSpinner.getPreferredSize().height));
+
+        xPosSpinner.addChangeListener(new ChangeListener() {
+
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                JSpinner source = (JSpinner) e.getSource();
+
+                if (ModelRenderer.selectedBox != null) {
+                    ModelRenderer.selectedBox.xPos = (float) ((double) source.getValue());
+                }
+
+                //System.out.println(source.getValue());
+            }
+        });
 
         editorPane.add(xPosSpinner);
 
@@ -223,6 +237,20 @@ public class ModelEditorWindow extends JFrame implements ActionListener {
         zPosSpinner = new JSpinner(zSpinnerModel);
 
         zPosSpinner.setPreferredSize(new Dimension(93, zPosSpinner.getPreferredSize().height));
+
+        zPosSpinner.addChangeListener(new ChangeListener() {
+
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                JSpinner source = (JSpinner) e.getSource();
+
+                if (ModelRenderer.selectedBox != null) {
+                    ModelRenderer.selectedBox.zPos = (float) ((double) source.getValue());
+                }
+
+                //System.out.println(source.getValue());
+            }
+        });
 
         editorPane.add(zPosSpinner);
 
