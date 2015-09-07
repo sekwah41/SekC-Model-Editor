@@ -120,14 +120,18 @@ public class ModelRenderer implements Runnable {
 		/**ModelBlock blockPlanks = new ModelBlock(null,16, 16, 16, -8, 0, -8, 0, 0);
 		blockPlanks.setWorldPos(0,0,0);
 		enviroBoxList.add(blockPlanks);*/
+
+		ModelBlock blockPlanks = new ModelBlock(null,16, 16, 16, -8, 0, -8, 0, 0);
+		blockPlanks.setWorldPos(0,0,0);
+		enviroBoxList.add(blockPlanks);
 		
-		for(int x = 0; x < 3; x++){
+		/*for(int x = 0; x < 3; x++){
 			for(int z = 0; z < 3; z++){
 				ModelBlock blockPlanks = new ModelBlock(null,16, 16, 16, -8, 0, -8, 0, 0);
 				blockPlanks.setWorldPos(x - 1,0,z - 1);
 				enviroBoxList.add(blockPlanks);
 			}
-		}
+		}*/
 	}
 
 	public static void setSelectedBox(ModelBox box) {
