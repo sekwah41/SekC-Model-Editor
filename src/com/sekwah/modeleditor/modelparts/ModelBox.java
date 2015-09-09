@@ -12,17 +12,17 @@ public class ModelBox {
 	public boolean isMirrored = false;
 	
 	public ModelBox parent = null;
-	
-	protected int xWidth = 0;
-	protected int yWidth = 0;
-	protected int zWidth = 0;
-	
-	protected float yOffset = 0F;
-	protected float xOffset = 0F;
-	protected float zOffset = 0F;
-	
-	protected int xTextureOffset = 0;
-	protected int yTextureOffset = 0;
+
+	public int xWidth = 0;
+	public int yWidth = 0;
+	public int zWidth = 0;
+
+	public float yOffset = 0F;
+	public float xOffset = 0F;
+	public float zOffset = 0F;
+
+	public int xTextureOffset = 0;
+	public int yTextureOffset = 0;
 	
 	public float xPos = 0;
 	public float yPos = 0;

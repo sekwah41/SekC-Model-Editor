@@ -31,9 +31,13 @@ public class ListSelectionHandler implements ListSelectionListener {
                 ModelEditorWindow.xRotationSlider.setValue((int) (((box.xRotation) / 180) * 50 + 50));
                 ModelEditorWindow.yRotationSlider.setValue((int) (((box.yRotation) / 180) * 50 + 50));
                 ModelEditorWindow.zRotationSlider.setValue((int) (((box.zRotation) / 180) * 50 + 50));
-                ModelEditorWindow.xPosSpinner.setValue(box.xPos);
-                ModelEditorWindow.yPosSpinner.setValue(box.yPos);
-                ModelEditorWindow.zPosSpinner.setValue(box.zPos);
+                ModelEditorWindow.xPosSpinner.setValue((double) box.xPos);
+                ModelEditorWindow.yPosSpinner.setValue((double) box.yPos);
+                ModelEditorWindow.zPosSpinner.setValue((double) box.zPos);
+
+                ModelEditorWindow.xSizeSpinner.setValue(box.xWidth);
+                ModelEditorWindow.ySizeSpinner.setValue(box.yWidth);
+                ModelEditorWindow.zSizeSpinner.setValue(box.zWidth);
             }
             /*for(ModelBox box :  modelRenderer.boxList){
                 if(box.name.equals(list.getSelectedValue().toString())){

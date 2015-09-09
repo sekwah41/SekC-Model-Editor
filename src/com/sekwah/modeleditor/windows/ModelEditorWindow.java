@@ -32,6 +32,11 @@ public class ModelEditorWindow extends JFrame implements ActionListener {
     public static JSpinner xSizeSpinner = null;
     public static JSpinner ySizeSpinner = null;
     public static JSpinner zSizeSpinner = null;
+    public static JSpinner xOffsetSpinner = null;
+    public static JSpinner yOffsetSpinner = null;
+    public static JSpinner zOffsetSpinner = null;
+    public static JSpinner xTextureSpinner = null;
+    public static JSpinner yTextureSpinner = null;
     private JList boxList;
 
     private JPanel contentPane;
@@ -83,6 +88,12 @@ public class ModelEditorWindow extends JFrame implements ActionListener {
         JMenuItem saveAsProject = new JMenuItem("Save As");
         saveAsProject.addActionListener(this);
         menu.add(saveAsProject);
+        JMenuItem importPose = new JMenuItem("Import Pose");
+        importPose.addActionListener(this);
+        menu.add(importPose);
+        JMenuItem exportPose = new JMenuItem("Export Pose");
+        exportPose.addActionListener(this);
+        menu.add(exportPose);
 
         menuBar.add(menu);
 
@@ -151,6 +162,8 @@ public class ModelEditorWindow extends JFrame implements ActionListener {
         });
 
         editorPane.add(nameBoxTextField);
+
+        // TODO add input and export box and json data for specific poses
 
         // TODO Add size and position boxes here
         // TODO allow the position spinners to have smaller values than the set steps, also
@@ -262,12 +275,26 @@ public class ModelEditorWindow extends JFrame implements ActionListener {
 
         SpinnerModel xSpinnerModelSize =
                 new SpinnerNumberModel(0, //initial value
-                        -999.00, //min
-                        999.00, //max
+                        -999, //min
+                        999, //max
                         1); // Step, so 1 up or 1 down
         xSizeSpinner = new JSpinner(xSpinnerModelSize);
 
         xSizeSpinner.setPreferredSize(new Dimension(93, xSizeSpinner.getPreferredSize().height));
+
+        xSizeSpinner.addChangeListener(new ChangeListener() {
+
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                JSpinner source = (JSpinner) e.getSource();
+
+                if (ModelRenderer.selectedBox != null) {
+                    ModelRenderer.selectedBox.xWidth = (int) source.getValue();
+                }
+
+                //System.out.println(source.getValue());
+            }
+        });
 
         editorPane.add(xSizeSpinner);
 
@@ -281,6 +308,20 @@ public class ModelEditorWindow extends JFrame implements ActionListener {
 
         ySizeSpinner.setPreferredSize(new Dimension(93, ySizeSpinner.getPreferredSize().height));
 
+        ySizeSpinner.addChangeListener(new ChangeListener() {
+
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                JSpinner source = (JSpinner) e.getSource();
+
+                if (ModelRenderer.selectedBox != null) {
+                    ModelRenderer.selectedBox.yWidth = (int) source.getValue();
+                }
+
+                //System.out.println(source.getValue());
+            }
+        });
+
         editorPane.add(ySizeSpinner);
 
         SpinnerModel zSpinnerModelSize =
@@ -292,6 +333,20 @@ public class ModelEditorWindow extends JFrame implements ActionListener {
         zSizeSpinner = new JSpinner(zSpinnerModelSize);
 
         zSizeSpinner.setPreferredSize(new Dimension(93, zSizeSpinner.getPreferredSize().height));
+
+        zSizeSpinner.addChangeListener(new ChangeListener() {
+
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                JSpinner source = (JSpinner) e.getSource();
+
+                if (ModelRenderer.selectedBox != null) {
+                    ModelRenderer.selectedBox.zWidth = (int) source.getValue();
+                }
+
+                //System.out.println(source.getValue());
+            }
+        });
 
         editorPane.add(zSizeSpinner);
 
