@@ -51,12 +51,6 @@ public class Assets {
 		Assets.splashScreen  = loadingScreen;
 		loadingScreen.setProgress("Loading Resources...", 0F);
 		favicon = loadTexture("Images/favicon.png");
-		try {
-			Thread.sleep(200);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		loadingScreen.setProgress("Loading Resources...", 0.2F);
 		mainMenu = new MainMenu();
 		displayFavicon = Assets.convertToByteBuffer(Assets.favicon);
@@ -107,8 +101,8 @@ public class Assets {
 
 			}});
 
-		exec.execute(new Thread(new Downloader("http://www.sekwah.com/resources/sekc-model-editor/lwjgl-jars.zip", AppdataStorageLocation + File.separator + "lwjgl-jars.zip", false)));
-		exec.execute(new Thread(new Downloader("http://www.sekwah.com/resources/sekc-model-editor/lwjgl-natives-win.zip", AppdataStorageLocation + File.separator + "lwjgl-natives-win.zip", false)));
+		exec.execute(new Thread(new Downloader("http://www.sekwah.com/resources/sekc-model-editor/lwjgl-jars.zip", AppdataStorageLocation + File.separator + "lwjgl-jars.zip", false, loadingScreen)));
+		exec.execute(new Thread(new Downloader("http://www.sekwah.com/resources/sekc-model-editor/lwjgl-natives-win.zip", AppdataStorageLocation + File.separator + "lwjgl-natives-win.zip", false, loadingScreen)));
 
 		exec.execute(new Thread(new Unpacker(AppdataStorageLocation + File.separator + "lwjgl-jars.zip", AppdataStorageLocation + File.separator + "libs")));
 		exec.execute(new Thread(new Unpacker(AppdataStorageLocation + File.separator + "lwjgl-natives-win.zip", AppdataStorageLocation + File.separator + "natives")));

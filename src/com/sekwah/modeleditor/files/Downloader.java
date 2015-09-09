@@ -1,5 +1,7 @@
 package com.sekwah.modeleditor.files;
 
+import com.sekwah.modeleditor.windows.SplashScreen;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -8,15 +10,16 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class Downloader implements Runnable{
+	private final SplashScreen loadingScreen;
 	private String url;
 	private String outFile;
 	private boolean overwrite;
-	public Downloader(String var1, String var2, boolean var5)
+	public Downloader(String var1, String var2, boolean var3, SplashScreen var4)
 	{
 		url = var1;
 		outFile = var2;
-		overwrite = var5;
-		
+		overwrite = var3;
+		loadingScreen = var4;
 		
 	}
 	public void run()
@@ -40,6 +43,7 @@ public class Downloader implements Runnable{
 					totalDataRead=totalDataRead+i;
 					buf.write(data,0,i);
 					float percent = (totalDataRead*100)/filesize;
+					loadingScreen.setProgress("Downloading: " + file.getName() , 1F);
 				}
 				buf.close();
 				out.close();

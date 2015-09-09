@@ -192,7 +192,7 @@ public class ModelEditorWindow extends JFrame implements ActionListener {
                 JSpinner source = (JSpinner) e.getSource();
 
                 if (ModelRenderer.selectedBox != null) {
-                    ModelRenderer.selectedBox.xPos = (float) ((double) source.getValue());
+                    ModelRenderer.selectedBox.xPos = Float.parseFloat(source.getValue().toString());
                 }
 
                 //System.out.println(source.getValue());
@@ -221,7 +221,7 @@ public class ModelEditorWindow extends JFrame implements ActionListener {
                 JSpinner source = (JSpinner)e.getSource();
 
                 if(ModelRenderer.selectedBox != null){
-                    ModelRenderer.selectedBox.yPos = (float) ((double) source.getValue());
+                    ModelRenderer.selectedBox.yPos = Float.parseFloat(source.getValue().toString());
                 }
 
                 //System.out.println(source.getValue());
@@ -258,7 +258,7 @@ public class ModelEditorWindow extends JFrame implements ActionListener {
                 JSpinner source = (JSpinner) e.getSource();
 
                 if (ModelRenderer.selectedBox != null) {
-                    ModelRenderer.selectedBox.zPos = (float) ((double) source.getValue());
+                    ModelRenderer.selectedBox.zPos = Float.parseFloat(source.getValue().toString());
                 }
 
                 //System.out.println(source.getValue());
@@ -289,7 +289,7 @@ public class ModelEditorWindow extends JFrame implements ActionListener {
                 JSpinner source = (JSpinner) e.getSource();
 
                 if (ModelRenderer.selectedBox != null) {
-                    ModelRenderer.selectedBox.xWidth = (int) source.getValue();
+                    ModelRenderer.selectedBox.xWidth = Integer.parseInt(source.getValue().toString());
                 }
 
                 //System.out.println(source.getValue());
@@ -315,7 +315,7 @@ public class ModelEditorWindow extends JFrame implements ActionListener {
                 JSpinner source = (JSpinner) e.getSource();
 
                 if (ModelRenderer.selectedBox != null) {
-                    ModelRenderer.selectedBox.yWidth = (int) source.getValue();
+                    ModelRenderer.selectedBox.yWidth = Integer.parseInt(source.getValue().toString());
                 }
 
                 //System.out.println(source.getValue());
@@ -341,7 +341,7 @@ public class ModelEditorWindow extends JFrame implements ActionListener {
                 JSpinner source = (JSpinner) e.getSource();
 
                 if (ModelRenderer.selectedBox != null) {
-                    ModelRenderer.selectedBox.zWidth = (int) source.getValue();
+                    ModelRenderer.selectedBox.zWidth = Integer.parseInt(source.getValue().toString());
                 }
 
                 //System.out.println(source.getValue());
@@ -374,7 +374,7 @@ public class ModelEditorWindow extends JFrame implements ActionListener {
                 JSpinner source = (JSpinner) e.getSource();
 
                 if (ModelRenderer.selectedBox != null) {
-                    ModelRenderer.selectedBox.xOffset = (float) ((double) source.getValue());
+                    ModelRenderer.selectedBox.xOffset = Float.parseFloat(source.getValue().toString());
                 }
 
                 //System.out.println(source.getValue());
@@ -403,7 +403,7 @@ public class ModelEditorWindow extends JFrame implements ActionListener {
                 JSpinner source = (JSpinner)e.getSource();
 
                 if(ModelRenderer.selectedBox != null){
-                    ModelRenderer.selectedBox.yOffset = (float) ((double) source.getValue());
+                    ModelRenderer.selectedBox.yOffset = Float.parseFloat(source.getValue().toString());
                 }
 
                 //System.out.println(source.getValue());
@@ -429,7 +429,7 @@ public class ModelEditorWindow extends JFrame implements ActionListener {
                 JSpinner source = (JSpinner) e.getSource();
 
                 if (ModelRenderer.selectedBox != null) {
-                    ModelRenderer.selectedBox.zOffset = (float) ((double) source.getValue());
+                    ModelRenderer.selectedBox.zOffset = Float.parseFloat(source.getValue().toString());
                 }
 
                 //System.out.println(source.getValue());
