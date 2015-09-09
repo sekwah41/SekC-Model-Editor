@@ -38,6 +38,10 @@ public class ListSelectionHandler implements ListSelectionListener {
                 ModelEditorWindow.xSizeSpinner.setValue(box.xWidth);
                 ModelEditorWindow.ySizeSpinner.setValue(box.yWidth);
                 ModelEditorWindow.zSizeSpinner.setValue(box.zWidth);
+
+                ModelEditorWindow.xOffsetSpinner.setValue((double) box.xOffset);
+                ModelEditorWindow.yOffsetSpinner.setValue((double) box.yOffset);
+                ModelEditorWindow.zOffsetSpinner.setValue((double) box.zOffset);
             }
             /*for(ModelBox box :  modelRenderer.boxList){
                 if(box.name.equals(list.getSelectedValue().toString())){

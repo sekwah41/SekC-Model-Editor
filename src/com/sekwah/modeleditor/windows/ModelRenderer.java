@@ -100,13 +100,32 @@ public class ModelRenderer implements Runnable {
 		boxList.add(legLeft);
 		
 		ModelBox legRight = new ModelBox(null, "rightLeg", 4, 12, 4, -2, -0, -2, 0, 16);
-		legRight.setPos(-2F,12F,0);
-		legRight.setRotation(0F,0F,0F);
+		legRight.setPos(-2F, 12F, 0);
+		legRight.setRotation(0F, 0F, 0F);
 		boxList.add(legRight);
+
+		// TODO add the proper legs
+		/*ModelBox legLeftUpper = new ModelBox(null, "leftLegUpper", 4, 6, 4, -2, -0, -2, 0, 16);
+		legLeftUpper.setPos(2F,12F,0);
+		legLeftUpper.setRotation(0F,0F,0F);
+		boxList.add(legLeftUpper);
+
+		ModelBox legRightUpper = new ModelBox(null, "rightLegUpper", 4, 6, 4, -2, -0, -2, 0, 16);
+		legRightUpper.setPos(-2F, 12F, 0);
+		legRightUpper.setRotation(0F, 0F, 0F);
+		boxList.add(legRightUpper);*/
 		
-		ModelBox body = new ModelBox(null, "torso", 8, 12, 4, -4, 0, -2, 16, 16);
+		/*ModelBox body = new ModelBox(null, "torso", 8, 12, 4, -4, 0, -2, 16, 16);
 		body.setRotation(0F,0F,0F);
-		boxList.add(body);
+		boxList.add(body);*/
+
+		ModelBox upperBody = new ModelBox(null, "upperBody", 8, 6, 4, -4, 0, -2, 16, 16);
+		upperBody.setRotation(0F,0F,0F);
+		boxList.add(upperBody);
+
+		ModelBox lowerBody = new ModelBox(null, "lowerBody", 8, 6, 4, -4, 6, -2, 16, 22);
+		upperBody.setRotation(0F,0F,0F);
+		boxList.add(lowerBody);
 		
 		ModelBox head = new ModelBox(null, "head", 8, 8, 8, -4, -8, -4, 0, 0);
 		head.setRotation(0F,0F,0F);

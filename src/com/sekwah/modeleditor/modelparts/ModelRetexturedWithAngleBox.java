@@ -17,6 +17,8 @@ public class ModelRetexturedWithAngleBox extends ModelBox {
 
 	public float botAngle = 0;
 
+	//TODO make this box act like in game
+
 
 	public ModelRetexturedWithAngleBox(ModelBox parent, String name, int xWidth, int yWidth, int zWidth, float xOffset, float yOffset, float zOffset, int xTextureOffset, int yTextureOffset, int xTop, int yTop, int xBot, int yBot){
 		super(parent, name, xWidth, yWidth, zWidth, xOffset, yOffset, zOffset, xTextureOffset, yTextureOffset);

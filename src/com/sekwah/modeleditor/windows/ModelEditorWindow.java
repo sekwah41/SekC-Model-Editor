@@ -351,6 +351,95 @@ public class ModelEditorWindow extends JFrame implements ActionListener {
         editorPane.add(zSizeSpinner);
 
 
+
+        JLabel offsetLabel = new JLabel("Offset");
+        offsetLabel.setForeground(new Color(255, 255, 255));
+        offsetLabel.setPreferredSize(new Dimension(290, offsetLabel.getPreferredSize().height));
+
+        editorPane.add(offsetLabel);
+        // TODO make custom spinner models or something to accept different decimal changes
+        SpinnerModel xSpinnerModelOffset =
+                new SpinnerNumberModel(0, //initial value
+                        -999, //min
+                        999, //max
+                        0.01); // Step, so 1 up or 1 down
+        xOffsetSpinner = new JSpinner(xSpinnerModelOffset);
+
+        xOffsetSpinner.setPreferredSize(new Dimension(93, xOffsetSpinner.getPreferredSize().height));
+
+        xOffsetSpinner.addChangeListener(new ChangeListener() {
+
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                JSpinner source = (JSpinner) e.getSource();
+
+                if (ModelRenderer.selectedBox != null) {
+                    ModelRenderer.selectedBox.xOffset = (float) ((double) source.getValue());
+                }
+
+                //System.out.println(source.getValue());
+            }
+        });
+
+        editorPane.add(xOffsetSpinner);
+
+        SpinnerModel ySpinnerModelOffset =
+                new SpinnerNumberModel(0, //initial value
+                        -999, //min
+                        999, //max
+                        0.01); // Step, so 1 up or 1 down
+
+        yOffsetSpinner = new JSpinner(ySpinnerModelOffset);
+
+        yOffsetSpinner.setPreferredSize(new Dimension(93, yOffsetSpinner.getPreferredSize().height));
+
+        // TODO add some way to change the jump scale and also make it put the values in correctly when the parts are selected, then the next part is texture offset
+        // Then finally adding blocks and not just removing them(remember make it so if something is selected it is parented to it if its created or make a new button)
+
+        yOffsetSpinner.addChangeListener(new ChangeListener() {
+
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                JSpinner source = (JSpinner)e.getSource();
+
+                if(ModelRenderer.selectedBox != null){
+                    ModelRenderer.selectedBox.yOffset = (float) ((double) source.getValue());
+                }
+
+                //System.out.println(source.getValue());
+            }
+        });
+
+        editorPane.add(yOffsetSpinner);
+
+        SpinnerModel zSpinnerModelOffset =
+                new SpinnerNumberModel(0, //initial value
+                        -999, //min
+                        999, //max
+                        0.01); // Step, so 1 up or 1 down
+
+        zOffsetSpinner = new JSpinner(zSpinnerModelOffset);
+
+        zOffsetSpinner.setPreferredSize(new Dimension(93, zOffsetSpinner.getPreferredSize().height));
+
+        zOffsetSpinner.addChangeListener(new ChangeListener() {
+
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                JSpinner source = (JSpinner) e.getSource();
+
+                if (ModelRenderer.selectedBox != null) {
+                    ModelRenderer.selectedBox.zOffset = (float) ((double) source.getValue());
+                }
+
+                //System.out.println(source.getValue());
+            }
+        });
+
+        editorPane.add(zOffsetSpinner);
+
+
+
         JLabel xRotationLabel = new JLabel("Rot X");
         xRotationLabel.setForeground(new Color(255,255,255));
         xRotationLabel.setPreferredSize(new Dimension(290, xRotationLabel.getPreferredSize().height));
