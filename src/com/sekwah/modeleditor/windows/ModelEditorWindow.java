@@ -176,9 +176,47 @@ public class ModelEditorWindow extends JFrame implements ActionListener {
 
         editorPane.add(preLabel);
 
-        JButton smallPrecisionBox = new JButton("0.01");
+        JButton smallPrecisionBox = new JButton("1.00");
         smallPrecisionBox.setPreferredSize(new Dimension(143, smallPrecisionBox.getPreferredSize().height + 4));
         smallPrecisionBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (ModelRenderer.getSelectedBox() != null) {
+                    ModelRenderer.getSelectedBox().delete();
+                    nameBoxTextField.setText("");
+                    nameBoxTextField.setEnabled(false);
+                    DefaultListModel listModel = new DefaultListModel();
+
+                    listModel = addBoxesList(ModelRenderer.boxList, listModel);
+
+                    boxList.clearSelection();
+                    boxList.setModel(listModel);
+                }
+            }
+        });
+
+        JButton medPrecisionBox = new JButton("0.10");
+        medPrecisionBox.setPreferredSize(new Dimension(143, medPrecisionBox.getPreferredSize().height + 4));
+        medPrecisionBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (ModelRenderer.getSelectedBox() != null) {
+                    ModelRenderer.getSelectedBox().delete();
+                    nameBoxTextField.setText("");
+                    nameBoxTextField.setEnabled(false);
+                    DefaultListModel listModel = new DefaultListModel();
+
+                    listModel = addBoxesList(ModelRenderer.boxList, listModel);
+
+                    boxList.clearSelection();
+                    boxList.setModel(listModel);
+                }
+            }
+        });
+
+        JButton largePrecisionBox = new JButton("0.01");
+        largePrecisionBox.setPreferredSize(new Dimension(143, largePrecisionBox.getPreferredSize().height + 4));
+        largePrecisionBox.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (ModelRenderer.getSelectedBox() != null) {
