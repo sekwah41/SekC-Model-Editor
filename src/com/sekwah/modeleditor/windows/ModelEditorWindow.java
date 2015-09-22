@@ -170,6 +170,32 @@ public class ModelEditorWindow extends JFrame implements ActionListener {
 
         // TODO add texture position boxes
 
+        JLabel preLabel = new JLabel("Precision");
+        preLabel.setForeground(new Color(255, 255, 255));
+        preLabel.setPreferredSize(new Dimension(290, preLabel.getPreferredSize().height));
+
+        editorPane.add(preLabel);
+
+        JButton smallPrecisionBox = new JButton("0.01");
+        smallPrecisionBox.setPreferredSize(new Dimension(143, smallPrecisionBox.getPreferredSize().height + 4));
+        smallPrecisionBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (ModelRenderer.getSelectedBox() != null) {
+                    ModelRenderer.getSelectedBox().delete();
+                    nameBoxTextField.setText("");
+                    nameBoxTextField.setEnabled(false);
+                    DefaultListModel listModel = new DefaultListModel();
+
+                    listModel = addBoxesList(ModelRenderer.boxList, listModel);
+
+                    boxList.clearSelection();
+                    boxList.setModel(listModel);
+                }
+            }
+        });
+
+
         JLabel posLabel = new JLabel("Position");
         posLabel.setForeground(new Color(255, 255, 255));
         posLabel.setPreferredSize(new Dimension(290, posLabel.getPreferredSize().height));
