@@ -1,6 +1,8 @@
 package com.sekwah.modeleditor.windows;
 
 import com.sekwah.modeleditor.assets.Assets;
+import com.sekwah.modeleditor.json.JSONArray;
+import com.sekwah.modeleditor.json.JSONObject;
 import com.sekwah.modeleditor.modelparts.ModelBox;
 
 import javax.imageio.ImageIO;
@@ -37,6 +39,7 @@ public class ModelEditorWindow extends JFrame implements ActionListener {
     public static JSpinner zOffsetSpinner = null;
     public static JSpinner xTextureSpinner = null;
     public static JSpinner yTextureSpinner = null;
+    private final JTextArea animDataOut;
     private JList boxList;
 
     private JPanel contentPane;
@@ -88,10 +91,10 @@ public class ModelEditorWindow extends JFrame implements ActionListener {
         JMenuItem saveAsProject = new JMenuItem("Save As");
         saveAsProject.addActionListener(this);
         menu.add(saveAsProject);
-        JMenuItem importPose = new JMenuItem("Import Pose");
+        JMenuItem importPose = new JMenuItem("Import Pose(Json)");
         importPose.addActionListener(this);
         menu.add(importPose);
-        JMenuItem exportPose = new JMenuItem("Export Pose");
+        JMenuItem exportPose = new JMenuItem("Export Pose(Json)");
         exportPose.addActionListener(this);
         menu.add(exportPose);
 
@@ -114,9 +117,9 @@ public class ModelEditorWindow extends JFrame implements ActionListener {
 
         contentPane.add(lwjglCanvas, BorderLayout.CENTER);
 
-
-
-        contentPane.add(editorPane, BorderLayout.LINE_START);
+        JScrollPane scrollPane = new JScrollPane(editorPane);
+        //scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        contentPane.add(scrollPane, BorderLayout.LINE_START);
 
         editorPane.setLayout(new FlowLayout());
 
@@ -170,68 +173,46 @@ public class ModelEditorWindow extends JFrame implements ActionListener {
 
         // TODO add texture position boxes
 
-        JLabel preLabel = new JLabel("Precision");
-        preLabel.setForeground(new Color(255, 255, 255));
-        preLabel.setPreferredSize(new Dimension(290, preLabel.getPreferredSize().height));
+        JLabel precLabel = new JLabel("Precision");
+        precLabel.setForeground(new Color(255, 255, 255));
+        precLabel.setPreferredSize(new Dimension(290, precLabel.getPreferredSize().height));
 
-        editorPane.add(preLabel);
+        editorPane.add(precLabel);
 
-        JButton smallPrecisionBox = new JButton("1.00");
-        smallPrecisionBox.setPreferredSize(new Dimension(143, smallPrecisionBox.getPreferredSize().height + 4));
-        smallPrecisionBox.addActionListener(new ActionListener() {
+        JButton lowPrecButton = new JButton("1.00");
+        lowPrecButton.setPreferredSize(new Dimension(55, 20));
+        lowPrecButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (ModelRenderer.getSelectedBox() != null) {
-                    ModelRenderer.getSelectedBox().delete();
-                    nameBoxTextField.setText("");
-                    nameBoxTextField.setEnabled(false);
-                    DefaultListModel listModel = new DefaultListModel();
-
-                    listModel = addBoxesList(ModelRenderer.boxList, listModel);
-
-                    boxList.clearSelection();
-                    boxList.setModel(listModel);
-                }
+                setEditorPrecision(1.00);
             }
         });
+        //newBox.setBorderPainted(false);
 
-        JButton medPrecisionBox = new JButton("0.10");
-        medPrecisionBox.setPreferredSize(new Dimension(143, medPrecisionBox.getPreferredSize().height + 4));
-        medPrecisionBox.addActionListener(new ActionListener() {
+        editorPane.add(lowPrecButton);
+        JButton medPrecButton = new JButton("0.10");
+        medPrecButton.setPreferredSize(new Dimension(55, 20));
+        medPrecButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (ModelRenderer.getSelectedBox() != null) {
-                    ModelRenderer.getSelectedBox().delete();
-                    nameBoxTextField.setText("");
-                    nameBoxTextField.setEnabled(false);
-                    DefaultListModel listModel = new DefaultListModel();
-
-                    listModel = addBoxesList(ModelRenderer.boxList, listModel);
-
-                    boxList.clearSelection();
-                    boxList.setModel(listModel);
-                }
+                setEditorPrecision(0.10);
             }
         });
+        //newBox.setBorderPainted(false);
 
-        JButton largePrecisionBox = new JButton("0.01");
-        largePrecisionBox.setPreferredSize(new Dimension(143, largePrecisionBox.getPreferredSize().height + 4));
-        largePrecisionBox.addActionListener(new ActionListener() {
+        editorPane.add(medPrecButton);
+
+        JButton highPrecButton = new JButton("0.01");
+        highPrecButton.setPreferredSize(new Dimension(55, 20));
+        highPrecButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (ModelRenderer.getSelectedBox() != null) {
-                    ModelRenderer.getSelectedBox().delete();
-                    nameBoxTextField.setText("");
-                    nameBoxTextField.setEnabled(false);
-                    DefaultListModel listModel = new DefaultListModel();
-
-                    listModel = addBoxesList(ModelRenderer.boxList, listModel);
-
-                    boxList.clearSelection();
-                    boxList.setModel(listModel);
-                }
+                setEditorPrecision(0.01);
             }
         });
+        //newBox.setBorderPainted(false);
+
+        editorPane.add(highPrecButton);
 
 
         JLabel posLabel = new JLabel("Position");
@@ -636,6 +617,14 @@ public class ModelEditorWindow extends JFrame implements ActionListener {
 
         editorPane.add(removeBox);
 
+        animDataOut = new JTextArea(5, 33);
+
+        JScrollPane scrollData = new JScrollPane(animDataOut);
+
+        editorPane.add(scrollData);
+
+        editorPane.setPreferredSize(new Dimension(300, 670));
+        
         this.repaint();
 
         modelRender = new ModelRenderer(lwjglCanvas);
@@ -716,10 +705,36 @@ public class ModelEditorWindow extends JFrame implements ActionListener {
     }
 
     @Override
-    public void actionPerformed(ActionEvent arg0) {
-        // TODO Auto-generated method stub
+    public void actionPerformed(ActionEvent event) {
+        if(event.getActionCommand().equals("Export Pose(Json)")){
+            JSONObject jsonOutput = new JSONObject();
+            JSONArray poses = new JSONArray();
 
+
+
+        }
     }
 
 
+    public void setEditorPrecision(double precision) {
+        SpinnerNumberModel xSpinner = new SpinnerNumberModel(0, //initial value
+                -999.00, //min
+                999.00, //max
+                precision);
+        SpinnerNumberModel ySpinner = new SpinnerNumberModel(0, //initial value
+                -999.00, //min
+                999.00, //max
+                precision);
+        SpinnerNumberModel zSpinner = new SpinnerNumberModel(0, //initial value
+                -999.00, //min
+                999.00, //max
+                precision);
+        xSpinner.setValue(xPosSpinner.getValue());
+        ySpinner.setValue(yPosSpinner.getValue());
+        zSpinner.setValue(zPosSpinner.getValue());
+
+        xPosSpinner.setModel(xSpinner);
+        yPosSpinner.setModel(ySpinner);
+        zPosSpinner.setModel(zSpinner);
+    }
 }
