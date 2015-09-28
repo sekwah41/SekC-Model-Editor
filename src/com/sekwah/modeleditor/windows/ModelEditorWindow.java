@@ -1,7 +1,6 @@
 package com.sekwah.modeleditor.windows;
 
 import com.sekwah.modeleditor.assets.Assets;
-import com.sekwah.modeleditor.json.JSONArray;
 import com.sekwah.modeleditor.json.JSONObject;
 import com.sekwah.modeleditor.modelparts.ModelBox;
 
@@ -15,6 +14,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class ModelEditorWindow extends JFrame implements ActionListener {
@@ -491,6 +491,8 @@ public class ModelEditorWindow extends JFrame implements ActionListener {
 
         editorPane.add(xRotationLabel);
 
+        // TODO verify that all rotations are the correct direction and that they are applied in the right order
+
         xRotationSlider = new JSlider();
         xRotationSlider.addChangeListener(new ChangeListener() {
 
@@ -617,7 +619,7 @@ public class ModelEditorWindow extends JFrame implements ActionListener {
 
         editorPane.add(removeBox);
 
-        animDataOut = new JTextArea(5, 33);
+        animDataOut = new JTextArea(10, 33);
 
         JScrollPane scrollData = new JScrollPane(animDataOut);
 
@@ -708,11 +710,49 @@ public class ModelEditorWindow extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent event) {
         if(event.getActionCommand().equals("Export Pose(Json)")){
             JSONObject jsonOutput = new JSONObject();
-            JSONArray poses = new JSONArray();
+            JSONObject poses = new JSONObject();
+            JSONObject currentPose = new JSONObject();
 
+            JSONObject locationData = new JSONObject();
 
+            for(ModelBox box: modelRender.boxList){
+                putPartData(box, locationData);
+                boxChildrenData(box.getChildren(), locationData);
+            }
 
+            currentPose.put("animDuration", -1);
+            currentPose.put("animLength", 20);
+            currentPose.put("locData", locationData);
+            poses.put("somePose", currentPose);
+            jsonOutput.put("poses", poses);
+
+            animDataOut.setText(jsonOutput.toString(2));
         }
+    }
+
+    private void boxChildrenData(ArrayList<ModelBox> children, JSONObject locationData) {
+        for(ModelBox box : children){
+            putPartData(box, locationData);
+            boxChildrenData(box.getChildren(), locationData);
+        }
+    }
+
+    private void putPartData(ModelBox box, JSONObject locationData) {
+        JSONObject partData = new JSONObject();
+        DecimalFormat df = new DecimalFormat("#0.00000000");
+        if(box.xRotation != 0){
+            partData.put("rotX", df.format(Math.toRadians(box.xRotation)));
+        }
+        if(box.yRotation != 0){
+            partData.put("rotY", df.format(Math.toRadians(box.yRotation)));
+        }
+        if(box.zRotation != 0){
+            partData.put("rotZ", df.format(Math.toRadians(box.zRotation)));
+        }
+        partData.put("posX", box.xPos);
+        partData.put("posY", box.yPos);
+        partData.put("posZ", box.zPos);
+        locationData.put(box.name, partData);
     }
 
 
@@ -729,6 +769,7 @@ public class ModelEditorWindow extends JFrame implements ActionListener {
                 -999.00, //min
                 999.00, //max
                 precision);
+        
         xSpinner.setValue(xPosSpinner.getValue());
         ySpinner.setValue(yPosSpinner.getValue());
         zSpinner.setValue(zPosSpinner.getValue());

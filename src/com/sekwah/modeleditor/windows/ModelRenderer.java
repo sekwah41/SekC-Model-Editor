@@ -66,72 +66,69 @@ public class ModelRenderer implements Runnable {
 		
 		ModelBox upperArmRight = new ModelRetexturedWithAngleBox(null, "rightArmUpper", 4, 6, 4, -3, -2, -2, 40, 16, 44, 16, 44, 26);
 		upperArmRight.setPos(-5F,2F,0);
-		upperArmRight.setRotation(0F,0F,0F);
 		boxList.add(upperArmRight);
 		
 		ModelBox lowerArmRight = new ModelRetexturedWithAngleBox(upperArmRight, "rightArmLower", 4, 6, 4, -2, 0, -2, 40, 22, 44, 26, 48, 16);
 		lowerArmRight.setPos(-1F,4F,0);
-		lowerArmRight.setRotation(0F,0F,0F);
 		upperArmRight.addChild(lowerArmRight);
 		
 		ModelBox upperArmLeft = new ModelRetexturedWithAngleBox(null, "leftArmUpper", 4, 6, 4, -1, -2, -2, 40, 16, 44, 16, 44, 26);
 		upperArmLeft.setPos(5F,2F,0);
-		upperArmLeft.setRotation(0F,0F,0F);
 		boxList.add(upperArmLeft);
 		
 		ModelBox lowerArmLeft = new ModelRetexturedWithAngleBox(upperArmLeft, "leftArmLower", 4, 6, 4, -2, 0, -2, 40, 22, 44, 26, 48, 16);
 		lowerArmLeft.setPos(1F,4F,0);
-		lowerArmLeft.setRotation(0F,0F,0F);
 		upperArmLeft.addChild(lowerArmLeft);
 
 		/*ModelBox armRight = new ModelBox(null, "rightArm", 4, 12, 4, -3, -2, -2, 40, 16);
 		armRight.setPos(-5F,2F,0);
-		armRight.setRotation(0F,0F,0F);
 		boxList.add(armRight);
 
 		ModelBox armLeft = new ModelBox(null, "leftArm", 4, 12, 4, -1, -2, -2, 40, 16);
 		armLeft.setPos(5F,2F,0);
-		armLeft.setRotation(0F,0F,0F);
 		boxList.add(armLeft);*/
 		
-		ModelBox legLeft = new ModelBox(null, "leftLeg", 4, 12, 4, -2, -0, -2, 0, 16);
+		/*ModelBox legLeft = new ModelBox(null, "leftLeg", 4, 12, 4, -2, -0, -2, 0, 16);
 		legLeft.setPos(2F,12F,0);
-		legLeft.setRotation(0F,0F,0F);
 		boxList.add(legLeft);
 		
 		ModelBox legRight = new ModelBox(null, "rightLeg", 4, 12, 4, -2, -0, -2, 0, 16);
 		legRight.setPos(-2F, 12F, 0);
 		legRight.setRotation(0F, 0F, 0F);
-		boxList.add(legRight);
+		boxList.add(legRight);*/
 
 		// TODO add the proper legs
-		/*ModelBox legLeftUpper = new ModelBox(null, "leftLegUpper", 4, 6, 4, -2, -0, -2, 0, 16);
+		ModelBox legLeftUpper = new ModelRetexturedWithAngleBox(null, "leftLegUpper", 4, 6, 4, -2, -0, -2, 0, 16, 4, 16, 4, 24);
 		legLeftUpper.setPos(2F,12F,0);
-		legLeftUpper.setRotation(0F,0F,0F);
 		boxList.add(legLeftUpper);
 
-		ModelBox legRightUpper = new ModelBox(null, "rightLegUpper", 4, 6, 4, -2, -0, -2, 0, 16);
+		ModelBox lowerLegLeft = new ModelRetexturedWithAngleBox(legLeftUpper, "leftLegLower", 4, 6, 4, -2, 0, -2, 0, 22, 4, 24, 8, 16);
+		lowerLegLeft.setPos(0F,6F,0);
+		legLeftUpper.addChild(lowerLegLeft);
+
+		ModelBox legRightUpper = new ModelRetexturedWithAngleBox(null, "rightLegUpper", 4, 6, 4, -2, -0, -2, 0, 16, 4, 16, 4, 24);
 		legRightUpper.setPos(-2F, 12F, 0);
-		legRightUpper.setRotation(0F, 0F, 0F);
-		boxList.add(legRightUpper);*/
-		
+		boxList.add(legRightUpper);
+
+		ModelBox lowerLegRight = new ModelRetexturedWithAngleBox(legRightUpper, "rightLegLower", 4, 6, 4, -2, 0, -2, 0, 22, 4, 24, 8, 16);
+		lowerLegRight.setPos(0F,6F,0);
+		legRightUpper.addChild(lowerLegRight);
+
+
 		/*ModelBox body = new ModelBox(null, "torso", 8, 12, 4, -4, 0, -2, 16, 16);
-		body.setRotation(0F,0F,0F);
 		boxList.add(body);*/
 
+		// TODO stop being lazy and add the proper upper and lower torsos upper and lower part textures
 		ModelBox upperBody = new ModelBox(null, "upperBody", 8, 6, 4, -4, 0, -2, 16, 16);
-		upperBody.setRotation(0F,0F,0F);
 		boxList.add(upperBody);
 
-		ModelBox lowerBody = new ModelBox(null, "lowerBody", 8, 6, 4, -4, 6, -2, 16, 22);
-		upperBody.setRotation(0F,0F,0F);
+		ModelBox lowerBody = new ModelBox(null, "lowerBody", 8, 6, 4, -4, 0, -2, 16, 22);
+		lowerBody.setPos(0F,6F,0F);
 		boxList.add(lowerBody);
 		
 		ModelBox head = new ModelBox(null, "head", 8, 8, 8, -4, -8, -4, 0, 0);
-		head.setRotation(0F,0F,0F);
 		
 		ModelBox headHelmet = new ModelBox(null, "helmet",8, 8, 8, -4, -8, -4, 32, 0, 0.5F);
-		headHelmet.setRotation(0F,0F,0F);
 		// boxList.add(headHelmet);
 		head.addChild(headHelmet);
 		boxList.add(head);
