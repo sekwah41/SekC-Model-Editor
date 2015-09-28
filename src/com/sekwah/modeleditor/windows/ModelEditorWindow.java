@@ -728,6 +728,11 @@ public class ModelEditorWindow extends JFrame implements ActionListener {
 
             animDataOut.setText(jsonOutput.toString(2));
         }
+        else if(event.getActionCommand().equals("Import Pose(Json)")){
+            JSONObject jsonInput = new JSONObject(animDataOut.getText());
+            JSONObject poses = jsonInput.getJSONObject("poses");
+            JSONObject poseInfo = poses.getJSONObject("somePose");
+        }
     }
 
     private void boxChildrenData(ArrayList<ModelBox> children, JSONObject locationData) {
