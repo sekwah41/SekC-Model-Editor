@@ -716,23 +716,51 @@ public class ModelEditorWindow extends JFrame implements ActionListener {
             JSONObject locationData = new JSONObject();
 
             for(ModelBox box: modelRender.boxList){
-                putPartData(box, locationData);
-                boxChildrenData(box.getChildren(), locationData);
+                putPartData(box, jsonOutput); // locationData
+                boxChildrenData(box.getChildren(), jsonOutput);
             }
 
-            currentPose.put("animDuration", -1);
+            /*currentPose.put("animDuration", -1);
             currentPose.put("animLength", 20);
             currentPose.put("locData", locationData);
             poses.put("somePose", currentPose);
-            jsonOutput.put("poses", poses);
+            jsonOutput.put("poses", poses);*/
+            //jsonOutput.put("locData", locationData);
 
             animDataOut.setText(jsonOutput.toString(2));
         }
         else if(event.getActionCommand().equals("Import Pose(Json)")){
             JSONObject jsonInput = new JSONObject(animDataOut.getText());
-            JSONObject poses = jsonInput.getJSONObject("poses");
+            /*JSONObject poses = jsonInput.getJSONObject("poses");
             JSONObject poseInfo = poses.getJSONObject("somePose");
-        }
+            JSONObject locInfo = poseInfo.getJSONObject("locData");*/
+            //JSONObject locInfo = jsonInput.getJSONObject("locData");
+            String [] partNames = jsonInput.getNames(jsonInput);
+            for(String partName : partNames){
+                JSONObject partInfo = jsonInput.getJSONObject(partName);
+                ModelBox box = findBox(partName);
+                if(partInfo.has("rotX")){
+                    box.xRotation = (float) Math.toDegrees(partInfo.getFloat("rotX"));
+                }
+                if(partInfo.has("rotY")){
+                    box.yRotation = (float) Math.toDegrees(partInfo.getFloat("rotY"));
+                }
+                if(partInfo.has("rotZ")){
+                    box.zRotation = (float) Math.toDegrees(partInfo.getFloat("rotZ"));
+                }
+
+
+                if(partInfo.has("posX")){
+                    box.xPos = partInfo.getFloat("posX");
+                }
+                if(partInfo.has("posY")){
+                    box.yPos = partInfo.getFloat("posY");
+                }
+                if(partInfo.has("posZ")){
+                    box.zPos = partInfo.getFloat("posZ");
+                }
+            }
+        };
     }
 
     private void boxChildrenData(ArrayList<ModelBox> children, JSONObject locationData) {
