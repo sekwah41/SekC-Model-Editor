@@ -1,6 +1,7 @@
 package com.sekwah.modeleditor.windows;
 
 import com.sekwah.modeleditor.assets.Assets;
+import com.sekwah.modeleditor.assets.OpenGlAssets;
 import com.sekwah.modeleditor.modelparts.ModelBlock;
 import com.sekwah.modeleditor.modelparts.ModelBox;
 import com.sekwah.modeleditor.modelparts.ModelRetexturedWithAngleBox;
@@ -183,9 +184,9 @@ public class ModelRenderer implements Runnable {
 		
 		GL11.glEnable(GL_TEXTURE_2D);
 		
-		int modelTextureID = Assets.loadTextureAndGetID(Assets.loadTexture("Images/SEKWAH.png"));
+		int modelTextureID = OpenGlAssets.loadTextureAndGetID(Assets.loadTexture("Images/SEKWAH.png"));
 		
-		int blockTextureID = Assets.loadTextureAndGetID(Assets.loadTexture("Images/Blocks/planks_oak.png"));
+		int blockTextureID = OpenGlAssets.loadTextureAndGetID(Assets.loadTexture("Images/Blocks/planks_oak.png"));
 		
 		GL11.glMatrixMode(GL11.GL_PROJECTION);
 		GL11.glLoadIdentity();
@@ -431,13 +432,13 @@ public class ModelRenderer implements Runnable {
 
 			GL11.glTranslatef(camPosX, camPosY, camPosZ);
 
-			Assets.rebindTexture(blockTextureID);
+			OpenGlAssets.rebindTexture(blockTextureID);
 
 			for(ModelBlock box: enviroBoxList){
 				box.render();
 			}
 
-			Assets.rebindTexture(modelTextureID);
+			OpenGlAssets.rebindTexture(modelTextureID);
 
 			/**if(selectedBox != null){
 				selectedBox.boxAlpha = 1F;

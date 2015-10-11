@@ -1,6 +1,6 @@
 package com.sekwah.modeleditor.modelparts;
 
-import com.sekwah.modeleditor.assets.Assets;
+import com.sekwah.modeleditor.assets.OpenGlAssets;
 import com.sekwah.modeleditor.assets.Point;
 import com.sekwah.modeleditor.windows.ModelRenderer;
 import org.lwjgl.opengl.GL11;
@@ -69,9 +69,9 @@ public class ModelBlock {
 		
 		// upper points
 		
-		int textureWidth = Assets.currentTextureWidth;
+		int textureWidth = OpenGlAssets.currentTextureWidth;
 		
-		int textureHeight = Assets.currentTextureHeight;
+		int textureHeight = OpenGlAssets.currentTextureHeight;
 		
 		GL11.glPushMatrix();
 		

@@ -782,9 +782,9 @@ public class ModelEditorWindow extends JFrame implements ActionListener {
         if(box.zRotation != 0){
             partData.put("rotZ", df.format(Math.toRadians(box.zRotation)));
         }
-        partData.put("posX", box.xPos);
-        partData.put("posY", box.yPos);
-        partData.put("posZ", box.zPos);
+        partData.put("posX", df.format(box.xPos));
+        partData.put("posY", df.format(box.yPos));
+        partData.put("posZ", df.format(box.zPos));
         locationData.put(box.name, partData);
     }
 

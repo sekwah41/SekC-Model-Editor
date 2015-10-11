@@ -3,8 +3,7 @@
     <output-path>$PROJECT_DIR$/out/artifacts/SekC_Model_Editor_jar</output-path>
     <root id="archive" name="SekC-Model-Editor.jar">
       <element id="module-output" name="SekC-Model-Editor" />
-      <element id="extracted-dir" path="$PROJECT_DIR$/../LWJGL assets/jars/lwjgl_util.jar" path-in-jar="/" />
-      <element id="extracted-dir" path="$PROJECT_DIR$/../LWJGL assets/jars/lwjgl.jar" path-in-jar="/" />
+      <element id="library" level="project" name="lwjgl" />
     </root>
   </artifact>
 </component>
