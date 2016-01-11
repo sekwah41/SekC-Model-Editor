@@ -10,7 +10,6 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
-import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.GLU;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
@@ -182,21 +181,21 @@ public class ModelRenderer implements Runnable {
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		
-		GL11.glEnable(GL_TEXTURE_2D);
+		glEnable(GL_TEXTURE_2D);
 		
 		int modelTextureID = OpenGlAssets.loadTextureAndGetID(Assets.loadTexture("Images/SEKWAH.png"));
 		
 		int blockTextureID = OpenGlAssets.loadTextureAndGetID(Assets.loadTexture("Images/Blocks/planks_oak.png"));
 		
-		GL11.glMatrixMode(GL11.GL_PROJECTION);
-		GL11.glLoadIdentity();
+		glMatrixMode(GL_PROJECTION);
+		glLoadIdentity();
 
-		GL11.glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
-		//GL11.glOrtho(0, 800, 0, 600, 1, -1);
-		GL11.glMatrixMode(GL11.GL_MODELVIEW);
+		//glOrtho(0, 800, 0, 600, 1, -1);
+		glMatrixMode(GL_MODELVIEW);
 
-		GL11.glEnable(GL11.GL_DEPTH_TEST);
+		glEnable(GL_DEPTH_TEST);
 
 		//glClearAccum(0.0f, 0.0f, 0.0f, 0.0f);
 
@@ -206,19 +205,19 @@ public class ModelRenderer implements Runnable {
 
 			//if (size != null)
 			//{
-				//GL11.glViewport(0, 0, size.width, size.height);
+				//glViewport(0, 0, size.width, size.height);
 				//GLU.gluPerspective(70, (float)size.width/size.height, 1f, 100);
 			//}
 
 
-			GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 
 			//glAccum(GL_RETURN, 1.0F);
 
 			//glClear(GL_ACCUM_BUFFER_BIT);
 			//glAccum(GL_LOAD, 0.97F);
-            //GL11.glClearColor(0, 0, 0, 1);
+            //glClearColor(0, 0, 0, 1);
 			
 			int mouseWheel = Mouse.getDWheel();
 
@@ -388,49 +387,49 @@ public class ModelRenderer implements Runnable {
 			}
 
 			// set the color of the quad (R,G,B,A)
-			//GL11.glColor3f(1f,1f,1.0f);
+			//glColor3f(1f,1f,1.0f);
 			
-			GL11.glColor3f(1f,1f,0.8f);
+			glColor3f(1f,1f,0.8f);
 
 			/**if(slidingLeft){
 				if(xOffset > 1){
 					slidingLeft = false;
 				}
 				xOffset += 0.01F;
-				GL11.glTranslatef(0.05F, 0, 0);
+				glTranslatef(0.05F, 0, 0);
 			}
 			else{
 				if(xOffset < -2){
 					slidingLeft = true;
 				}
 				xOffset -= 0.01F;
-				GL11.glTranslatef(-0.05F, 0, 0);
+				glTranslatef(-0.05F, 0, 0);
 			}*/
 
 
-			GL11.glColor3f(1f,1f,1f);
+			glColor3f(1f,1f,1f);
 
-			GL11.glPushMatrix();
+			glPushMatrix();
 
 			GLU.gluPerspective(70, (float)size.width/size.height, 1f, 1000);
 
-			GL11.glViewport(0, 0, size.width, size.height);
+			glViewport(0, 0, size.width, size.height);
 
 			//float xOffset = 0;
 
 			//boolean slidingLeft = true;
 
-			GL11.glTranslatef(0, 0F, -31F);
+			glTranslatef(0, 0F, -31F);
 
-			GL11.glRotatef(180, 1, 0, 0);
+			glRotatef(180, 1, 0, 0);
 
 			rotateCamera(camRotX,1,0,0,currentZoom);
 
 			rotateCamera(camRotY,0,1,0,currentZoom);
 
-			GL11.glTranslatef(0, 0F, currentZoom);
+			glTranslatef(0, 0F, currentZoom);
 
-			GL11.glTranslatef(camPosX, camPosY, camPosZ);
+			glTranslatef(camPosX, camPosY, camPosZ);
 
 			OpenGlAssets.rebindTexture(blockTextureID);
 
@@ -455,17 +454,17 @@ public class ModelRenderer implements Runnable {
 				box.render();
 			}
 			
-			GL11.glPopMatrix();
+			glPopMatrix();
 
             /* Blur which kinda has failed so leave it for now */
             //glAccum(GL_ACCUM, 0.7F);
 
-			/**GL11.glBegin(GL11.GL_QUADS);
-			GL11.glVertex2f(10, 10);
-			GL11.glVertex2f(40, 10);
-			GL11.glVertex2f(40, 40);
-			GL11.glVertex2f(10, 40);
-			GL11.glEnd();*/
+			/**glBegin(GL_QUADS);
+			glVertex2f(10, 10);
+			glVertex2f(40, 10);
+			glVertex2f(40, 40);
+			glVertex2f(10, 40);
+			glEnd();*/
 
 			// render OpenGL here
 			Display.sync(60);
@@ -476,11 +475,11 @@ public class ModelRenderer implements Runnable {
 	}
 	
 	private static void rotateCamera(float a, float x, float y, float z, float d) {
-		GL11.glTranslatef(0, 0, d);
+		glTranslatef(0, 0, d);
 		
-		GL11.glRotatef(a, x, y, z);
+		glRotatef(a, x, y, z);
 		
-		GL11.glTranslatef(0, 0, -d);
+		glTranslatef(0, 0, -d);
 		
 	}
 	
@@ -524,7 +523,7 @@ public class ModelRenderer implements Runnable {
 
 
 			/*ModelBox currentBox = box;
-			GL11.glPushMatrix();
+			glPushMatrix();
 			ArrayList<ModelBox> boxList = new ArrayList<ModelBox>();
 			boxList.add(currentBox);
 			while(currentBox.parent != null){
@@ -534,17 +533,17 @@ public class ModelRenderer implements Runnable {
 			Collections.reverse(boxList);
 			System.out.println(boxList);
 			for(ModelBox box2 : boxList){
-				GL11.glTranslatef(box2.xPos, box2.yPos, box2.zPos);
+				glTranslatef(box2.xPos, box2.yPos, box2.zPos);
 
-				GL11.glRotatef(box2.yRotation, 0, 1, 0);
-				GL11.glRotatef(box2.zRotation, 0, 0, 1);
-				GL11.glRotatef(box2.xRotation, 1, 0, 0);
+				glRotatef(box2.yRotation, 0, 1, 0);
+				glRotatef(box2.zRotation, 0, 0, 1);
+				glRotatef(box2.xRotation, 1, 0, 0);
 			}
-			Matrix4f matrix = Assets.getMatrix(GL11.GL_MODELVIEW_MATRIX);
+			Matrix4f matrix = Assets.getMatrix(GL_MODELVIEW_MATRIX);
 			xPosMoveTo = -(matrix.m00 * box.xPos + matrix.m10 * box.yPos + matrix.m20 * box.zPos);
 			yPosMoveTo = -(matrix.m01 * box.xPos + matrix.m11 * box.yPos + matrix.m21 * box.zPos);
 			zPosMoveTo = (matrix.m02 * box.xPos + matrix.m12 * box.yPos + matrix.m22 * box.zPos);
-			GL11.glPopMatrix();*/
+			glPopMatrix();*/
 		}
 		else{
 			xPosMoveTo = -box.xPos;
