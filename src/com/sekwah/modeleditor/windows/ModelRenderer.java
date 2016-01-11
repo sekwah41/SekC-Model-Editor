@@ -119,10 +119,10 @@ public class ModelRenderer implements Runnable {
 		boxList.add(body);*/
 
 		// TODO stop being lazy and add the proper upper and lower torsos upper and lower part textures
-		ModelBox upperBody = new ModelBox(null, "upperBody", 8, 6, 4, -4, 0, -2, 16, 16);
+		ModelBox upperBody = new ModelRetexturedWithAngleBox(null, "upperBody", 8, 6, 4, -4, 0, -2, 16, 16, 20, 16, 28,24);
 		boxList.add(upperBody);
 
-		ModelBox lowerBody = new ModelBox(null, "lowerBody", 8, 6, 4, -4, 0, -2, 16, 22);
+		ModelBox lowerBody = new ModelRetexturedWithAngleBox(null, "lowerBody", 8, 6, 4, -4, 0, -2, 16, 22, 28, 24, 28,16);
 		lowerBody.setPos(0F,6F,0F);
 		boxList.add(lowerBody);
 		

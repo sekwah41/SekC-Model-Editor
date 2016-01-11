@@ -87,8 +87,8 @@ public class ModelBox {
 		
 		GL11.glTranslatef(xPos, yPos, zPos);
 
-		GL11.glRotatef(yRotation, 0, 1, 0);
 		GL11.glRotatef(zRotation, 0, 0, 1);
+		GL11.glRotatef(yRotation, 0, 1, 0);
 		GL11.glRotatef(xRotation, 1, 0, 0);
 
         // adds transparancy
