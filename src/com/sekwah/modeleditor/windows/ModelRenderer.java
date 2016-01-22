@@ -30,13 +30,13 @@ public class ModelRenderer implements Runnable {
 	public int currentTextureWidth = 0;
 
 	public static ArrayList<ModelBox> boxList = new ArrayList<ModelBox>();
-	
+
 	public static ArrayList<ModelBlock> enviroBoxList = new ArrayList<ModelBlock>();
-	
+
 	public float camRotX = 40;
-	
+
 	public float camRotY = 40;
-	
+
 	public float camRotZ = 0; // may never be needed
 
 	public float camPosX = 0; // + == right from the character facing forward
@@ -54,7 +54,7 @@ public class ModelRenderer implements Runnable {
 	public static boolean isSlidingCamera = true;
 
 	public float camZoom = 15;
-	
+
 	public float currentZoom = 6;
 
 	public static ModelBox selectedBox = null;
@@ -64,19 +64,19 @@ public class ModelRenderer implements Runnable {
 
 	public ModelRenderer(Canvas lwjglCanvas) {
 		this.renderCanvas = lwjglCanvas;
-		
+
 		ModelBox upperArmRight = new ModelRetexturedWithAngleBox(null, "rightArmUpper", 4, 6, 4, -3, -2, -2, 40, 16, 44, 16, 44, 26);
 		upperArmRight.setPos(-5F,2F,0);
 		boxList.add(upperArmRight);
-		
+
 		ModelBox lowerArmRight = new ModelRetexturedWithAngleBox(upperArmRight, "rightArmLower", 4, 6, 4, -2, 0, -2, 40, 22, 44, 26, 48, 16);
 		lowerArmRight.setPos(-1F,4F,0);
 		upperArmRight.addChild(lowerArmRight);
-		
+
 		ModelBox upperArmLeft = new ModelRetexturedWithAngleBox(null, "leftArmUpper", 4, 6, 4, -1, -2, -2, 40, 16, 44, 16, 44, 26);
 		upperArmLeft.setPos(5F,2F,0);
 		boxList.add(upperArmLeft);
-		
+
 		ModelBox lowerArmLeft = new ModelRetexturedWithAngleBox(upperArmLeft, "leftArmLower", 4, 6, 4, -2, 0, -2, 40, 22, 44, 26, 48, 16);
 		lowerArmLeft.setPos(1F,4F,0);
 		upperArmLeft.addChild(lowerArmLeft);
@@ -88,11 +88,11 @@ public class ModelRenderer implements Runnable {
 		ModelBox armLeft = new ModelBox(null, "leftArm", 4, 12, 4, -1, -2, -2, 40, 16);
 		armLeft.setPos(5F,2F,0);
 		boxList.add(armLeft);*/
-		
+
 		/*ModelBox legLeft = new ModelBox(null, "leftLeg", 4, 12, 4, -2, -0, -2, 0, 16);
 		legLeft.setPos(2F,12F,0);
 		boxList.add(legLeft);
-		
+
 		ModelBox legRight = new ModelBox(null, "rightLeg", 4, 12, 4, -2, -0, -2, 0, 16);
 		legRight.setPos(-2F, 12F, 0);
 		legRight.setRotation(0F, 0F, 0F);
@@ -126,14 +126,14 @@ public class ModelRenderer implements Runnable {
 		ModelBox lowerBody = new ModelRetexturedWithAngleBox(null, "lowerBody", 8, 6, 4, -4, 0, -2, 16, 22, 28, 24, 28,16);
 		lowerBody.setPos(0F,6F,0F);
 		boxList.add(lowerBody);
-		
+
 		ModelBox head = new ModelBox(null, "head", 8, 8, 8, -4, -8, -4, 0, 0);
-		
+
 		ModelBox headHelmet = new ModelBox(null, "helmet",8, 8, 8, -4, -8, -4, 32, 0, 0.5F);
 		// boxList.add(headHelmet);
 		head.addChild(headHelmet);
 		boxList.add(head);
-		
+
 		/**ModelBlock blockPlanks = new ModelBlock(null,16, 16, 16, -8, 0, -8, 0, 0);
 		blockPlanks.setWorldPos(0,0,0);
 		enviroBoxList.add(blockPlanks);*/
@@ -141,7 +141,7 @@ public class ModelRenderer implements Runnable {
 		ModelBlock blockPlanks = new ModelBlock(null,16, 16, 16, -8, 0, -8, 0, 0);
 		blockPlanks.setWorldPos(0,0,0);
 		enviroBoxList.add(blockPlanks);
-		
+
 		/*for(int x = 0; x < 3; x++){
 			for(int z = 0; z < 3; z++){
 				ModelBlock blockPlanks = new ModelBlock(null,16, 16, 16, -8, 0, -8, 0, 0);
@@ -161,10 +161,10 @@ public class ModelRenderer implements Runnable {
 
 	@Override
 	public void run() {
-		
-		
+
+
 		Dimension size = null;
-		
+
 		size = renderCanvas.getSize();
 		try {
 			Display.setDisplayMode(new DisplayMode(size.width, size.height));
@@ -178,25 +178,27 @@ public class ModelRenderer implements Runnable {
 			e.printStackTrace();
 			System.exit(0);
 		}
-		
+
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		
-		GL11.glEnable(GL_TEXTURE_2D);
-		
+
+		glEnable(GL_TEXTURE_2D);
+
 		int modelTextureID = OpenGlAssets.loadTextureAndGetID(Assets.loadTexture("Images/SEKWAH.png"));
-		
+
 		int blockTextureID = OpenGlAssets.loadTextureAndGetID(Assets.loadTexture("Images/Blocks/planks_oak.png"));
-		
-		GL11.glMatrixMode(GL11.GL_PROJECTION);
-		GL11.glLoadIdentity();
 
-		GL11.glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		// TODO rewrite camera transformations and stuff properly using the projection and modelview matricies
+		glMatrixMode(GL_PROJECTION);
+		glLoadIdentity();
 
-		//GL11.glOrtho(0, 800, 0, 600, 1, -1);
-		GL11.glMatrixMode(GL11.GL_MODELVIEW);
+		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
-		GL11.glEnable(GL11.GL_DEPTH_TEST);
+		//glOrtho(0, 800, 0, 600, 1, -1);
+		glMatrixMode(GL_MODELVIEW);
+
+		glEnable(GL_DEPTH_TEST);
+		glLoadIdentity();
 
 		//glClearAccum(0.0f, 0.0f, 0.0f, 0.0f);
 
@@ -206,20 +208,18 @@ public class ModelRenderer implements Runnable {
 
 			//if (size != null)
 			//{
-				//GL11.glViewport(0, 0, size.width, size.height);
+				//glViewport(0, 0, size.width, size.height);
 				//GLU.gluPerspective(70, (float)size.width/size.height, 1f, 100);
 			//}
 
-
-			GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
-
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 			//glAccum(GL_RETURN, 1.0F);
 
 			//glClear(GL_ACCUM_BUFFER_BIT);
 			//glAccum(GL_LOAD, 0.97F);
-            //GL11.glClearColor(0, 0, 0, 1);
-			
+            //glClearColor(0, 0, 0, 1);
+
 			int mouseWheel = Mouse.getDWheel();
 
 			currentZoom += (camZoom - currentZoom) / 5;
@@ -301,9 +301,9 @@ public class ModelRenderer implements Runnable {
 					dY = Mouse.getDY();
 				}
 
-				
+
 				camZoom -= mouseWheel / 30;
-				
+
 				if(camZoom > 60){
 					camZoom = 60;
 				}
@@ -317,17 +317,17 @@ public class ModelRenderer implements Runnable {
 					camPosX += (Math.cos(Math.toRadians(camRotY))) * ((float) dX / 18) * multiplier;
 
 					camPosZ += (Math.sin(Math.toRadians(camRotY))) * ((float) dX / 18) * multiplier;
-					
+
 					double verty = (Math.cos(Math.toRadians(camRotX))) * ((float) dY / 18) * multiplier;
 
 					double vertx = (Math.sin(Math.toRadians(camRotX))) * ((float) dY / 18) * multiplier;
-					
+
 					camPosX += (Math.sin(Math.toRadians(camRotX))) *  (Math.cos(Math.toRadians(camRotY + 90))) * ((float) dY / 18) * multiplier;
 
 					camPosZ += (Math.sin(Math.toRadians(camRotX))) * (Math.sin(Math.toRadians(camRotY + 90))) * ((float) dY / 18) * multiplier;
-					
+
 					camPosY -= verty;
-					
+
 					//camPosx += (float) Mouse.getDX() / 16;
 
 					//camPosy -= (float) Mouse.getDY() / 16;
@@ -352,7 +352,7 @@ public class ModelRenderer implements Runnable {
 				}
 				else if(Mouse.isButtonDown(1)){
 					camRotX -= (float) dY / 4;
-					
+
 					camRotY -= (float) dX / 4;
 
 					if(x == size.width - 1){
@@ -373,14 +373,14 @@ public class ModelRenderer implements Runnable {
                         hasSetMousePos = true;
                     }
 				}
-				
-				
-				
+
+
+
 				if(camRotX > 360){
 					camRotX -= 360;}
 				else if(camRotX < 0){
 					camRotX += 360;}
-				
+
 				if(camRotY > 360){
 					camRotY -= 360;}
 				else if(camRotY < 0){
@@ -388,49 +388,55 @@ public class ModelRenderer implements Runnable {
 			}
 
 			// set the color of the quad (R,G,B,A)
-			//GL11.glColor3f(1f,1f,1.0f);
-			
-			GL11.glColor3f(1f,1f,0.8f);
+			//glColor3f(1f,1f,1.0f);
+
+			glColor3f(1f, 1f, 0.8f);
 
 			/**if(slidingLeft){
 				if(xOffset > 1){
 					slidingLeft = false;
 				}
 				xOffset += 0.01F;
-				GL11.glTranslatef(0.05F, 0, 0);
+				glTranslatef(0.05F, 0, 0);
 			}
 			else{
 				if(xOffset < -2){
 					slidingLeft = true;
 				}
 				xOffset -= 0.01F;
-				GL11.glTranslatef(-0.05F, 0, 0);
+				glTranslatef(-0.05F, 0, 0);
 			}*/
 
 
-			GL11.glColor3f(1f,1f,1f);
+			glColor3f(1f,1f,1f);
 
-			GL11.glPushMatrix();
+			glPushMatrix();
+
+			glMatrixMode(GL11.GL_PROJECTION);
+			glLoadIdentity();
 
 			GLU.gluPerspective(70, (float)size.width/size.height, 1f, 1000);
 
-			GL11.glViewport(0, 0, size.width, size.height);
+			glViewport(0, 0, size.width, size.height);
 
 			//float xOffset = 0;
 
 			//boolean slidingLeft = true;
 
-			GL11.glTranslatef(0, 0F, -31F);
+			glTranslatef(0, 0F, -31F);
 
-			GL11.glRotatef(180, 1, 0, 0);
+			glRotatef(180, 1, 0, 0);
 
-			rotateCamera(camRotX,1,0,0,currentZoom);
+			rotateCamera(camRotX, 1, 0, 0, currentZoom);
 
 			rotateCamera(camRotY,0,1,0,currentZoom);
 
-			GL11.glTranslatef(0, 0F, currentZoom);
+			glTranslatef(0, 0F, currentZoom);
 
-			GL11.glTranslatef(camPosX, camPosY, camPosZ);
+			glTranslatef(camPosX, camPosY, camPosZ);
+
+			glMatrixMode(GL11.GL_MODELVIEW);
+			glLoadIdentity();
 
 			OpenGlAssets.rebindTexture(blockTextureID);
 
@@ -454,36 +460,39 @@ public class ModelRenderer implements Runnable {
 				}
 				box.render();
 			}
-			
-			GL11.glPopMatrix();
+
+
+			glPopMatrix();
 
             /* Blur which kinda has failed so leave it for now */
             //glAccum(GL_ACCUM, 0.7F);
 
-			/**GL11.glBegin(GL11.GL_QUADS);
-			GL11.glVertex2f(10, 10);
-			GL11.glVertex2f(40, 10);
-			GL11.glVertex2f(40, 40);
-			GL11.glVertex2f(10, 40);
-			GL11.glEnd();*/
+			/**glBegin(GL_QUADS);
+			glVertex2f(10, 10);
+			glVertex2f(40, 10);
+			glVertex2f(40, 40);
+			glVertex2f(10, 40);
+			glEnd();*/
 
 			// render OpenGL here
+
+
 			Display.sync(60);
 			Display.update();
 		}
 
 		Display.destroy();
 	}
-	
+
 	private static void rotateCamera(float a, float x, float y, float z, float d) {
-		GL11.glTranslatef(0, 0, d);
-		
-		GL11.glRotatef(a, x, y, z);
-		
-		GL11.glTranslatef(0, 0, -d);
-		
+		glTranslatef(0, 0, d);
+
+		glRotatef(a, x, y, z);
+
+		glTranslatef(0, 0, -d);
+
 	}
-	
+
 	public static boolean isBlockAt(float xPos, float yPos, float zPos){
 		for(ModelBlock box: enviroBoxList){
 			if(box.xPos == xPos && box.yPos == yPos && box.zPos == zPos){
@@ -524,7 +533,7 @@ public class ModelRenderer implements Runnable {
 
 
 			/*ModelBox currentBox = box;
-			GL11.glPushMatrix();
+			glPushMatrix();
 			ArrayList<ModelBox> boxList = new ArrayList<ModelBox>();
 			boxList.add(currentBox);
 			while(currentBox.parent != null){
@@ -534,17 +543,17 @@ public class ModelRenderer implements Runnable {
 			Collections.reverse(boxList);
 			System.out.println(boxList);
 			for(ModelBox box2 : boxList){
-				GL11.glTranslatef(box2.xPos, box2.yPos, box2.zPos);
+				glTranslatef(box2.xPos, box2.yPos, box2.zPos);
 
-				GL11.glRotatef(box2.yRotation, 0, 1, 0);
-				GL11.glRotatef(box2.zRotation, 0, 0, 1);
-				GL11.glRotatef(box2.xRotation, 1, 0, 0);
+				glRotatef(box2.yRotation, 0, 1, 0);
+				glRotatef(box2.zRotation, 0, 0, 1);
+				glRotatef(box2.xRotation, 1, 0, 0);
 			}
-			Matrix4f matrix = Assets.getMatrix(GL11.GL_MODELVIEW_MATRIX);
+			Matrix4f matrix = Assets.getMatrix(GL_MODELVIEW_MATRIX);
 			xPosMoveTo = -(matrix.m00 * box.xPos + matrix.m10 * box.yPos + matrix.m20 * box.zPos);
 			yPosMoveTo = -(matrix.m01 * box.xPos + matrix.m11 * box.yPos + matrix.m21 * box.zPos);
 			zPosMoveTo = (matrix.m02 * box.xPos + matrix.m12 * box.yPos + matrix.m22 * box.zPos);
-			GL11.glPopMatrix();*/
+			glPopMatrix();*/
 		}
 		else{
 			xPosMoveTo = -box.xPos;
