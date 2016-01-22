@@ -6,11 +6,8 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 public class Window extends JFrame {
-	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -7476171267782335901L;
+
+	private static final long serialVersionUID = -9016687182952886617L;
 	
 	protected BufferedImage currentTexture = null;
 	
