@@ -5,6 +5,7 @@ import com.sekwah.modeleditor.assets.OpenGlAssets;
 import com.sekwah.modeleditor.modelparts.ModelBlock;
 import com.sekwah.modeleditor.modelparts.ModelBox;
 import com.sekwah.modeleditor.modelparts.ModelRetexturedWithAngleBox;
+import com.sekwah.modeleditor.viewer.Camera;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
@@ -33,7 +34,7 @@ public class ModelRenderer implements Runnable {
 
 	public static ArrayList<ModelBlock> enviroBoxList = new ArrayList<ModelBlock>();
 
-	public float camRotX = 40;
+	/*public float camRotX = 40;
 
 	public float camRotY = 40;
 
@@ -43,7 +44,9 @@ public class ModelRenderer implements Runnable {
 
 	public float camPosY = -10; // + == up from the character
 
-	public float camPosZ = 300; // + == forward from the character
+	public float camPosZ = 300; // + == forward from the character*/
+
+	public Camera camera = new Camera(0,-10,300,40,40);
 
 	private static float xPosMoveTo = 0;
 
@@ -225,10 +228,10 @@ public class ModelRenderer implements Runnable {
 			currentZoom += (camZoom - currentZoom) / 5;
 
 			if(isSlidingCamera){
-				if(Math.sqrt(Math.pow((camPosX - xPosMoveTo), 2) + Math.pow((camPosY - yPosMoveTo),2) + Math.pow((camPosZ - zPosMoveTo),2)) > 0.1F){
-					camPosX += (xPosMoveTo - camPosX) / 7;
-					camPosY += (yPosMoveTo - camPosY) / 7;
-					camPosZ += (zPosMoveTo - camPosZ) / 7;
+				if(Math.sqrt(Math.pow((camera.posX - xPosMoveTo), 2) + Math.pow((camera.posY - yPosMoveTo),2) + Math.pow((camera.posZ - zPosMoveTo),2)) > 0.1F){
+					camera.posX += (xPosMoveTo - camera.posX) / 7;
+					camera.posY += (yPosMoveTo - camera.posY) / 7;
+					camera.posZ += (zPosMoveTo - camera.posZ) / 7;
 				}
 				else{
 					isSlidingCamera = false;
@@ -254,43 +257,43 @@ public class ModelRenderer implements Runnable {
 				if(Keyboard.isKeyDown(Keyboard.KEY_A)){
 					isSlidingCamera = false;
 					float multiplier = (currentZoom + 28F) / 30;
-					camPosX += (Math.cos(Math.toRadians(camRotY))) * ((float) 10 / 18) * multiplier;
+					camera.posX += (Math.cos(Math.toRadians(camera.rotY))) * ((float) 10 / 18) * multiplier;
 
-					camPosZ += (Math.sin(Math.toRadians(camRotY))) * ((float) 10 / 18) * multiplier;
+					camera.posZ += (Math.sin(Math.toRadians(camera.rotY))) * ((float) 10 / 18) * multiplier;
 				}
 
 				if(Keyboard.isKeyDown(Keyboard.KEY_D)){
 					isSlidingCamera = false;
 					float multiplier = -(currentZoom + 28F) / 30;
-					camPosX += (Math.cos(Math.toRadians(camRotY))) * ((float) 10 / 18) * multiplier;
+					camera.posX += (Math.cos(Math.toRadians(camera.rotY))) * ((float) 10 / 18) * multiplier;
 
-					camPosZ += (Math.sin(Math.toRadians(camRotY))) * ((float) 10 / 18) * multiplier;
+					camera.posZ += (Math.sin(Math.toRadians(camera.rotY))) * ((float) 10 / 18) * multiplier;
 				}
 
 				if(Keyboard.isKeyDown(Keyboard.KEY_W)){
 					isSlidingCamera = false;
 					float multiplier = -(currentZoom + 28F) / 30;
 
-					double verty = (Math.cos(Math.toRadians(camRotX + 90))) * ((float) 10 / 18) * multiplier;
+					double verty = (Math.cos(Math.toRadians(camera.rotX + 90))) * ((float) 10 / 18) * multiplier;
 
-					camPosX += (Math.sin(Math.toRadians(camRotX + 90))) *  (Math.cos(Math.toRadians(camRotY + 90))) * ((float) 10 / 18) * multiplier;
+					camera.posX += (Math.sin(Math.toRadians(camera.rotX + 90))) *  (Math.cos(Math.toRadians(camera.rotY + 90))) * ((float) 10 / 18) * multiplier;
 
-					camPosZ += (Math.sin(Math.toRadians(camRotX + 90))) * (Math.sin(Math.toRadians(camRotY + 90))) * ((float) 10 / 18) * multiplier;
+					camera.posZ += (Math.sin(Math.toRadians(camera.rotX + 90))) * (Math.sin(Math.toRadians(camera.rotY + 90))) * ((float) 10 / 18) * multiplier;
 
-					camPosY -= verty;
+					camera.posY -= verty;
 				}
 
 				if(Keyboard.isKeyDown(Keyboard.KEY_S)){
 					isSlidingCamera = false;
 					float multiplier = (currentZoom + 28F) / 30;
 
-					double verty = (Math.cos(Math.toRadians(camRotX + 90))) * ((float) 10 / 18) * multiplier;
+					double verty = (Math.cos(Math.toRadians(camera.rotX + 90))) * ((float) 10 / 18) * multiplier;
 
-					camPosX += (Math.sin(Math.toRadians(camRotX + 90))) *  (Math.cos(Math.toRadians(camRotY + 90))) * ((float) 10 / 18) * multiplier;
+					camera.posX += (Math.sin(Math.toRadians(camera.rotX + 90))) *  (Math.cos(Math.toRadians(camera.rotY + 90))) * ((float) 10 / 18) * multiplier;
 
-					camPosZ += (Math.sin(Math.toRadians(camRotX + 90))) * (Math.sin(Math.toRadians(camRotY + 90))) * ((float) 10 / 18) * multiplier;
+					camera.posZ += (Math.sin(Math.toRadians(camera.rotX + 90))) * (Math.sin(Math.toRadians(camera.rotY + 90))) * ((float) 10 / 18) * multiplier;
 
-					camPosY -= verty;
+					camera.posY -= verty;
 				}
 
 				if(hasSetMousePos) {
@@ -314,23 +317,23 @@ public class ModelRenderer implements Runnable {
 				if(Mouse.isButtonDown(1) && Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)){
 					isSlidingCamera = false;
 					float multiplier = (currentZoom + 28F) / 30;
-					camPosX += (Math.cos(Math.toRadians(camRotY))) * ((float) dX / 18) * multiplier;
+					camera.posX += (Math.cos(Math.toRadians(camera.rotY))) * ((float) dX / 18) * multiplier;
 
-					camPosZ += (Math.sin(Math.toRadians(camRotY))) * ((float) dX / 18) * multiplier;
+					camera.posZ += (Math.sin(Math.toRadians(camera.rotY))) * ((float) dX / 18) * multiplier;
 
-					double verty = (Math.cos(Math.toRadians(camRotX))) * ((float) dY / 18) * multiplier;
+					double verty = (Math.cos(Math.toRadians(camera.rotX))) * ((float) dY / 18) * multiplier;
 
-					double vertx = (Math.sin(Math.toRadians(camRotX))) * ((float) dY / 18) * multiplier;
+					double vertx = (Math.sin(Math.toRadians(camera.rotX))) * ((float) dY / 18) * multiplier;
 
-					camPosX += (Math.sin(Math.toRadians(camRotX))) *  (Math.cos(Math.toRadians(camRotY + 90))) * ((float) dY / 18) * multiplier;
+					camera.posX += (Math.sin(Math.toRadians(camera.rotX))) *  (Math.cos(Math.toRadians(camera.rotY + 90))) * ((float) dY / 18) * multiplier;
 
-					camPosZ += (Math.sin(Math.toRadians(camRotX))) * (Math.sin(Math.toRadians(camRotY + 90))) * ((float) dY / 18) * multiplier;
+					camera.posZ += (Math.sin(Math.toRadians(camera.rotX))) * (Math.sin(Math.toRadians(camera.rotY + 90))) * ((float) dY / 18) * multiplier;
 
-					camPosY -= verty;
+					camera.posY -= verty;
 
-					//camPosx += (float) Mouse.getDX() / 16;
+					//camera.posx += (float) Mouse.getDX() / 16;
 
-					//camPosy -= (float) Mouse.getDY() / 16;
+					//camera.posy -= (float) Mouse.getDY() / 16;
 
 					if(x == size.width - 1){
 						Mouse.setCursorPosition(x - size.width + 4,y);
@@ -351,9 +354,9 @@ public class ModelRenderer implements Runnable {
                     }
 				}
 				else if(Mouse.isButtonDown(1)){
-					camRotX -= (float) dY / 4;
+					camera.rotX -= (float) dY / 4;
 
-					camRotY -= (float) dX / 4;
+					camera.rotY -= (float) dX / 4;
 
 					if(x == size.width - 1){
 						Mouse.setCursorPosition(x - size.width + 1,y);
@@ -376,15 +379,15 @@ public class ModelRenderer implements Runnable {
 
 
 
-				if(camRotX > 360){
-					camRotX -= 360;}
-				else if(camRotX < 0){
-					camRotX += 360;}
+				if(camera.rotX > 360){
+					camera.rotX -= 360;}
+				else if(camera.rotX < 0){
+					camera.rotX += 360;}
 
-				if(camRotY > 360){
-					camRotY -= 360;}
-				else if(camRotY < 0){
-					camRotY += 360;}
+				if(camera.rotY > 360){
+					camera.rotY -= 360;}
+				else if(camera.rotY < 0){
+					camera.rotY += 360;}
 			}
 
 			// set the color of the quad (R,G,B,A)
@@ -427,13 +430,13 @@ public class ModelRenderer implements Runnable {
 
 			glRotatef(180, 1, 0, 0);
 
-			rotateCamera(camRotX, 1, 0, 0, currentZoom);
+			rotateCamera(camera.rotX, 1, 0, 0, currentZoom);
 
-			rotateCamera(camRotY,0,1,0,currentZoom);
+			rotateCamera(camera.rotY,0,1,0,currentZoom);
 
 			glTranslatef(0, 0F, currentZoom);
 
-			glTranslatef(camPosX, camPosY, camPosZ);
+			glTranslatef(camera.posX, camera.posY, camera.posZ);
 
 			glMatrixMode(GL11.GL_MODELVIEW);
 			glLoadIdentity();
