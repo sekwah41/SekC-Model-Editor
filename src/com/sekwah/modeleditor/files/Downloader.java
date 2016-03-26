@@ -20,17 +20,17 @@ public class Downloader implements Runnable{
 		outFile = var2;
 		overwrite = var3;
 		loadingScreen = var4;
-		
+
 	}
 	public void run()
 	{
 		try
 		{
 			File file = new File(outFile);
-			if(!file.exists() || overwrite){
-				URL url1 = new URL(url);
-				HttpURLConnection connection = (HttpURLConnection) url1.openConnection();
-				int filesize = connection.getContentLength();
+			URL url1 = new URL(url);
+			HttpURLConnection connection = (HttpURLConnection) url1.openConnection();
+			long filesize = connection.getContentLength();
+			if(!file.exists() || overwrite || filesize != file.length()){
 				float totalDataRead = 0;
 				BufferedInputStream in = new BufferedInputStream(connection.getInputStream());
 				FileOutputStream out = new FileOutputStream(outFile);
@@ -40,10 +40,10 @@ public class Downloader implements Runnable{
 				int i = 0;
 				while((i = in.read(data, 0, 1024))>=0)
 				{
-					totalDataRead=totalDataRead+i;
+					totalDataRead+=i;
 					buf.write(data,0,i);
-					float percent = (totalDataRead*100)/filesize;
-					loadingScreen.setProgress("Downloading: " + file.getName() , 1F);
+					float percent = (totalDataRead)/filesize;
+					loadingScreen.setDownloadProgress("Downloading: " + file.getName(), (int) (totalDataRead / 1024) + "/" + (filesize / 1024) + "kb" , percent);
 				}
 				buf.close();
 				out.close();
@@ -52,12 +52,12 @@ public class Downloader implements Runnable{
 			else{
 				System.out.println("File: '" + outFile + "' already exists");
 			}
-			
+
 		}
 		catch(Exception event){
 			event.printStackTrace();
-			}
-		
+		}
+
 	}
 
 }

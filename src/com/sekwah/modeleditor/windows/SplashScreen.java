@@ -17,6 +17,10 @@ public class SplashScreen extends Window {
 	
 	protected BufferedImage favicon = null;
 
+	public boolean downloading = false;
+
+	public String downloadingMessage = "";
+
 	private SplashScreen splashScreenFrame;
 	
 	public String loadingProgress = "Loading Resources...";
@@ -72,10 +76,13 @@ public class SplashScreen extends Window {
 			g2d.setRenderingHints(hints);
 			g2d.setColor(getBackground());
 			g2d.drawImage(splashImage, 0, 0, getWidth(), getHeight(), this);
-			g2d.setColor(new Color(10,160,200));
+			g2d.setColor(new Color(10, 160, 200));
 			g2d.fillRect(274, 164, (int) (318 * loadingPercent), 2);
-			g2d.setColor(new Color(0,0,0));
+			g2d.setColor(new Color(0, 0, 0));
 			g2d.drawString(loadingProgress, 279, 180);
+			if(downloading){
+				g2d.drawString(downloadingMessage, 279, 200);
+			}
 			g2d.dispose();
 		}
 	}
@@ -208,6 +215,15 @@ public class SplashScreen extends Window {
 
 	public void setProgress(String progressText, float progress) {
 		this.loadingProgress = progressText + " " + (int) (progress * 100) + "%";
+		this.loadingPercent = progress;
+		this.downloading = false;
+		this.repaint();
+	}
+
+	public void setDownloadProgress(String progressText, String downloadProgress, float progress) {
+		this.loadingProgress = progressText + " " + (int) (progress * 100) + "%";
+		this.downloadingMessage = downloadProgress;
+		this.downloading = true;
 		this.loadingPercent = progress;
 		this.repaint();
 	}

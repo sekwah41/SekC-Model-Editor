@@ -1,6 +1,7 @@
 package com.sekwah.modeleditor.assets;
 
 import com.sekwah.modeleditor.files.Downloader;
+import com.sekwah.modeleditor.files.LoadLibraryFolder;
 import com.sekwah.modeleditor.files.Unpacker;
 import com.sekwah.modeleditor.windows.MainMenu;
 import com.sekwah.modeleditor.windows.ModelEditorWindow;
@@ -31,7 +32,7 @@ public class Assets {
 	private static String AppdataStorageLocation;
 
 
-	public static void loadResources(SplashScreen loadingScreen){
+	public static void loadResources(final SplashScreen loadingScreen){
 		Assets.splashScreen  = loadingScreen;
 		loadingScreen.setProgress("Loading Resources...", 0F);
 		favicon = loadTexture("Images/favicon.png");
@@ -92,6 +93,35 @@ public class Assets {
 		exec.execute(new Thread(new Unpacker(AppdataStorageLocation + File.separator + "lwjgl-jars.zip", AppdataStorageLocation + File.separator + "libs")));
 		exec.execute(new Thread(new Unpacker(AppdataStorageLocation + File.separator + "lwjgl-natives-win.zip", AppdataStorageLocation + File.separator + "natives")));
 
+		exec.execute(new Runnable() {
+			@Override
+			public void run() {
+				LoadLibraryFolder.load(new File(AppdataStorageLocation + File.separator + "natives"));
+			}
+		});
+
+		final SplashScreen tempLoading = loadingScreen;
+		exec.execute(new Runnable() {
+			@Override
+			public void run() {
+				tempLoading.setProgress("Loading Resources...", 0.4F);
+				modelEditorWindow = new ModelEditorWindow();
+
+				tempLoading.setProgress("Done", 1F);
+				try {
+					Thread.sleep(2000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+				mainMenu = new MainMenu();
+
+				Assets.splashScreen.fadeOut();
+				Assets.modelEditorWindow.setVisible(true);
+			}
+		});
+
 		/*System.setProperty("java.library.path", new File(AppdataStorageLocation + File.separator + "libs").getAbsolutePath());
 
 		System.setProperty("org.lwjgl.librarypath", new File(AppdataStorageLocation + File.separator + "natives").getAbsolutePath());*/
@@ -99,22 +129,6 @@ public class Assets {
 		//System.setProperty("org.lwjgl.librarypath", new File("natives").getAbsolutePath());
 
 		//System.loadLibrary("lwjgl64");
-
-		loadingScreen.setProgress("Loading Resources...", 0.4F);
-		modelEditorWindow = new ModelEditorWindow();
-		
-		loadingScreen.setProgress("Done", 1F);
-		try {
-			Thread.sleep(2000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		mainMenu = new MainMenu();
-		
-		Assets.splashScreen.fadeOut();
-		Assets.modelEditorWindow.setVisible(true);
 	}
 
 	// http://lwjgl.org/forum/index.php/topic,4083.0.html
