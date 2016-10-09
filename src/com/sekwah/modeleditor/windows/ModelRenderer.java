@@ -496,13 +496,15 @@ public class ModelRenderer implements Runnable {
 
 	}
 
+	// Keep it as false as its more efficient and probably just as good tbh. Tho no point in removing alltogether
 	public static boolean isBlockAt(float xPos, float yPos, float zPos){
-		for(ModelBlock box: enviroBoxList){
+		return false;
+		/*for(ModelBlock box: enviroBoxList){
 			if(box.xPos == xPos && box.yPos == yPos && box.zPos == zPos){
 				return true;
 			}
 		}
-		return false;
+		return false;*/
 	}
 
 	public static void moveCameraTo(float xPos, float yPos, float zPos) {
@@ -526,8 +528,8 @@ public class ModelRenderer implements Runnable {
 			for(ModelBox box2 : boxList){
 				matrix.translate(new Vector3f(box2.xPos, box2.yPos, box2.zPos));
 
-				matrix.rotate((float) Math.toRadians(box2.yRotation), new Vector3f(0, 1, 0));
 				matrix.rotate((float) Math.toRadians(box2.zRotation), new Vector3f(0, 0, 1));
+				matrix.rotate((float) Math.toRadians(box2.yRotation), new Vector3f(0, 1, 0));
 				matrix.rotate((float) Math.toRadians(box2.xRotation), new Vector3f(1, 0, 0));
 			}
 			xPosMoveTo = -(matrix.m00 * box.xPos + matrix.m10 * box.yPos + matrix.m20 * box.zPos + matrix.m30);
