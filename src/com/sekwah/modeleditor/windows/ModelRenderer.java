@@ -187,7 +187,10 @@ public class ModelRenderer implements Runnable {
 
 		glEnable(GL_TEXTURE_2D);
 
-		int modelTextureID = OpenGlAssets.loadTextureAndGetID(Assets.loadTexture("Images/SEKWAH.png"));
+		//int modelTextureID = OpenGlAssets.loadTextureAndGetID(Assets.loadTexture("Images/SEKWAH.png"));
+		int modelTextureID = OpenGlAssets.loadTextureAndGetID(Assets.loadTexture("Images/3011craft.png"));
+
+		int susanooTextureID = OpenGlAssets.loadTextureAndGetID(Assets.loadTexture("Images/susanoo.png"));
 
 		int blockTextureID = OpenGlAssets.loadTextureAndGetID(Assets.loadTexture("Images/Blocks/planks_oak.png"));
 
