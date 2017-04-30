@@ -101,7 +101,31 @@ public class ModelRenderer implements Runnable {
 		legRight.setRotation(0F, 0F, 0F);
 		boxList.add(legRight);*/
 
-		// TODO add the proper legs
+		this.createPlayer();
+
+
+		this.createSusanoo();
+
+
+
+		/**ModelBlock blockPlanks = new ModelBlock(null,16, 16, 16, -8, 0, -8, 0, 0);
+		 blockPlanks.setWorldPos(0,0,0);
+		 enviroBoxList.add(blockPlanks);*/
+
+		ModelBlock blockPlanks = new ModelBlock(null,16, 16, 16, -8, 0, -8, 0, 0);
+		blockPlanks.setWorldPos(0,0,0);
+		enviroBoxList.add(blockPlanks);
+
+		/*for(int x = 0; x < 3; x++){
+			for(int z = 0; z < 3; z++){
+				ModelBlock blockPlanks = new ModelBlock(null,16, 16, 16, -8, 0, -8, 0, 0);
+				blockPlanks.setWorldPos(x - 1,0,z - 1);
+				enviroBoxList.add(blockPlanks);
+			}
+		}*/
+	}
+
+	private void createPlayer() {
 		ModelBox legLeftUpper = new ModelRetexturedWithAngleBox(null, "leftLegUpper", 4, 6, 4, -2, -0, -2, 0, 16, 4, 16, 4, 24);
 		legLeftUpper.setPos(2F,12F,0);
 		boxList.add(legLeftUpper);
@@ -136,22 +160,15 @@ public class ModelRenderer implements Runnable {
 		// boxList.add(headHelmet);
 		head.addChild(headHelmet);
 		boxList.add(head);
+	}
 
-		/**ModelBlock blockPlanks = new ModelBlock(null,16, 16, 16, -8, 0, -8, 0, 0);
-		blockPlanks.setWorldPos(0,0,0);
-		enviroBoxList.add(blockPlanks);*/
+	private void createSusanoo() {
 
-		ModelBlock blockPlanks = new ModelBlock(null,16, 16, 16, -8, 0, -8, 0, 0);
-		blockPlanks.setWorldPos(0,0,0);
-		enviroBoxList.add(blockPlanks);
+		ModelBox legRightUpper = new ModelBox(null, "Spine", 4, 26, 3, 0, 0, 0, 0, 0);
+		legRightUpper.setPos(-2, -5, 9);
+		boxList.add(legRightUpper);
 
-		/*for(int x = 0; x < 3; x++){
-			for(int z = 0; z < 3; z++){
-				ModelBlock blockPlanks = new ModelBlock(null,16, 16, 16, -8, 0, -8, 0, 0);
-				blockPlanks.setWorldPos(x - 1,0,z - 1);
-				enviroBoxList.add(blockPlanks);
-			}
-		}*/
+
 	}
 
 	public static void setSelectedBox(ModelBox box) {
@@ -187,8 +204,8 @@ public class ModelRenderer implements Runnable {
 
 		glEnable(GL_TEXTURE_2D);
 
-		//int modelTextureID = OpenGlAssets.loadTextureAndGetID(Assets.loadTexture("Images/SEKWAH.png"));
-		int modelTextureID = OpenGlAssets.loadTextureAndGetID(Assets.loadTexture("Images/3011craft.png"));
+		int modelTextureID = OpenGlAssets.loadTextureAndGetID(Assets.loadTexture("Images/SEKWAH.png"));
+		//int modelTextureID = OpenGlAssets.loadTextureAndGetID(Assets.loadTexture("Images/3011craft.png"));
 
 		int susanooTextureID = OpenGlAssets.loadTextureAndGetID(Assets.loadTexture("Images/susanoo.png"));
 
@@ -214,8 +231,8 @@ public class ModelRenderer implements Runnable {
 
 			//if (size != null)
 			//{
-				//glViewport(0, 0, size.width, size.height);
-				//GLU.gluPerspective(70, (float)size.width/size.height, 1f, 100);
+			//glViewport(0, 0, size.width, size.height);
+			//GLU.gluPerspective(70, (float)size.width/size.height, 1f, 100);
 			//}
 
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -224,7 +241,7 @@ public class ModelRenderer implements Runnable {
 
 			//glClear(GL_ACCUM_BUFFER_BIT);
 			//glAccum(GL_LOAD, 0.97F);
-            //glClearColor(0, 0, 0, 1);
+			//glClearColor(0, 0, 0, 1);
 
 			int mouseWheel = Mouse.getDWheel();
 
@@ -347,14 +364,14 @@ public class ModelRenderer implements Runnable {
 						hasSetMousePos = true;
 					}
 
-                    if(y == size.height - 1){
-                        Mouse.setCursorPosition(x,y - size.height + 4);
-                        hasSetMousePos = true;
-                    }
-                    else if(y == 0){
-                        Mouse.setCursorPosition(x,y + size.height - 4);
-                        hasSetMousePos = true;
-                    }
+					if(y == size.height - 1){
+						Mouse.setCursorPosition(x,y - size.height + 4);
+						hasSetMousePos = true;
+					}
+					else if(y == 0){
+						Mouse.setCursorPosition(x,y + size.height - 4);
+						hasSetMousePos = true;
+					}
 				}
 				else if(Mouse.isButtonDown(1)){
 					camera.rotX -= (float) dY / 4;
@@ -370,14 +387,14 @@ public class ModelRenderer implements Runnable {
 						hasSetMousePos = true;
 					}
 
-                    if(y == size.height - 1){
-                        Mouse.setCursorPosition(x,y - size.height + 1);
-                        hasSetMousePos = true;
-                    }
-                    else if(y == 0){
-                        Mouse.setCursorPosition(x,y + size.height - 1);
-                        hasSetMousePos = true;
-                    }
+					if(y == size.height - 1){
+						Mouse.setCursorPosition(x,y - size.height + 1);
+						hasSetMousePos = true;
+					}
+					else if(y == 0){
+						Mouse.setCursorPosition(x,y + size.height - 1);
+						hasSetMousePos = true;
+					}
 				}
 
 
@@ -399,19 +416,19 @@ public class ModelRenderer implements Runnable {
 			glColor3f(1f, 1f, 0.8f);
 
 			/**if(slidingLeft){
-				if(xOffset > 1){
-					slidingLeft = false;
-				}
-				xOffset += 0.01F;
-				glTranslatef(0.05F, 0, 0);
-			}
-			else{
-				if(xOffset < -2){
-					slidingLeft = true;
-				}
-				xOffset -= 0.01F;
-				glTranslatef(-0.05F, 0, 0);
-			}*/
+			 if(xOffset > 1){
+			 slidingLeft = false;
+			 }
+			 xOffset += 0.01F;
+			 glTranslatef(0.05F, 0, 0);
+			 }
+			 else{
+			 if(xOffset < -2){
+			 slidingLeft = true;
+			 }
+			 xOffset -= 0.01F;
+			 glTranslatef(-0.05F, 0, 0);
+			 }*/
 
 
 			glColor3f(1f,1f,1f);
@@ -453,11 +470,16 @@ public class ModelRenderer implements Runnable {
 			OpenGlAssets.rebindTexture(modelTextureID);
 
 			/**if(selectedBox != null){
-				selectedBox.boxAlpha = 1F;
-				selectedBox.render();
-			}*/
-
+			 selectedBox.boxAlpha = 1F;
+			 selectedBox.render();
+			 }*/
+			int blockCutOff = 8;
 			for(ModelBox box: boxList){
+				if(blockCutOff > 0){
+					if(--blockCutOff == 0){
+						OpenGlAssets.rebindTexture(susanooTextureID);
+					}
+				}
 				if(selectedBox != null){
 					box.boxAlpha = 0.4F;
 				}
@@ -471,14 +493,14 @@ public class ModelRenderer implements Runnable {
 			glPopMatrix();
 
             /* Blur which kinda has failed so leave it for now */
-            //glAccum(GL_ACCUM, 0.7F);
+			//glAccum(GL_ACCUM, 0.7F);
 
 			/**glBegin(GL_QUADS);
-			glVertex2f(10, 10);
-			glVertex2f(40, 10);
-			glVertex2f(40, 40);
-			glVertex2f(10, 40);
-			glEnd();*/
+			 glVertex2f(10, 10);
+			 glVertex2f(40, 10);
+			 glVertex2f(40, 40);
+			 glVertex2f(10, 40);
+			 glEnd();*/
 
 			// render OpenGL here
 

@@ -21,7 +21,7 @@ public class OpenGlAssets {
 
     private static FloatBuffer matrixData = BufferUtils.createFloatBuffer(16);
 
-    public static BufferedImage[] Images = new BufferedImage[2];
+    public static BufferedImage[] Images = new BufferedImage[3];
 
     public static int currentTextureHeight = 0;
 

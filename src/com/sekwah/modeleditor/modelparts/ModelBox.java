@@ -32,7 +32,7 @@ public class ModelBox {
 	public float yRotation = 0;
 	public float zRotation = 0;
 	
-	protected float sizeScaler = 0;
+	protected float sizeScaler = 0f;
 	
 	protected ArrayList<ModelBox> childBoxes = new ArrayList<ModelBox>();
 
@@ -107,12 +107,11 @@ public class ModelBox {
 		Point point2 = new Point(xOffset + xWidth + sizeScaler,yOffset - sizeScaler,zOffset - sizeScaler);
 		Point point3 = new Point(xOffset + xWidth + sizeScaler,yOffset + yWidth + sizeScaler,zOffset - sizeScaler);
 		Point point4 = new Point(xOffset - sizeScaler,yOffset + yWidth + sizeScaler,zOffset - sizeScaler);
-		
-		// lower points
+
 		Point point5 = new Point(xOffset - sizeScaler,yOffset - sizeScaler,zOffset + zWidth + sizeScaler);
-		Point point6 = new Point(xOffset + xWidth,yOffset - sizeScaler,zOffset + zWidth + sizeScaler);
-		Point point7 = new Point(xOffset + xWidth,yOffset + yWidth + sizeScaler,zOffset + zWidth + sizeScaler);
-		Point point8 = new Point(xOffset - sizeScaler,yOffset + yWidth + sizeScaler,zOffset + zWidth);
+		Point point6 = new Point(xOffset + xWidth + sizeScaler,yOffset - sizeScaler,zOffset + zWidth + sizeScaler);
+		Point point7 = new Point(xOffset + xWidth + sizeScaler,yOffset + yWidth + sizeScaler,zOffset + zWidth + sizeScaler);
+		Point point8 = new Point(xOffset - sizeScaler,yOffset + yWidth + sizeScaler,zOffset + zWidth + sizeScaler);
 		
 		// GL11.glColor4f(0.95f,0.95f,0.95f, 0.3F); for alpha too
 		GL11.glColor4f(0.95f, 0.95f, 0.95f, boxAlpha);
