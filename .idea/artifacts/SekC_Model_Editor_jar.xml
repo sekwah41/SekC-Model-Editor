@@ -1,9 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="jar" name="SekC-Model-Editor:jar">
-    <output-path>$USER_HOME$/Desktop</output-path>
-    <root id="archive" name="SekC-Model-Editor.jar">
-      <element id="module-output" name="SekC-Model-Editor" />
-      <element id="library" level="project" name="lwjgl" />
-    </root>
-  </artifact>
-</component>

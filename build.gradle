@@ -1,0 +1,56 @@
+apply plugin: 'java'
+apply plugin: 'application'
+apply plugin: 'idea'
+apply plugin: 'eclipse'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+mainClassName = "com.sekwah.modeleditor.SekCEditor"
+
+configurations {
+}
+
+dependencies {
+    compile "org.lwjgl.lwjgl:lwjgl:2.9.2"
+    compile "org.lwjgl.lwjgl:lwjgl_util:2.9.2"
+}
+
+run {
+    systemProperty 'java.library.path', file( 'build/natives/windows')
+    //systemProperty 'java.library.path', file( 'build/natives/linux')
+    //systemProperty 'java.library.path', file( 'build/natives/osx')
+}
+
+repositories {
+    mavenCentral()
+}
+
+jar {
+    baseName = 'SekC-Model-Editor'
+    version =  '0.1.0'
+    manifest {
+        attributes 'Main-Class': 'com.sekwah.modeleditor.SekCEditor'
+    }
+}
+project.ext.platforms = ['windows', 'linux', 'osx']
+platforms.each { platform ->
+    task "${platform}Natives" {
+        String outputDir = "$buildDir/natives/$platform"
+        inputs.files(configurations.compile)
+        outputs.dir(outputDir)
+        doLast {
+            copy {
+                def artifacts = configurations.compile.resolvedConfiguration.resolvedArtifacts
+                        .findAll { it.classifier == "natives-$platform" }
+                artifacts.each {
+                    from zipTree(it.file)
+                }
+                into outputDir
+            }
+        }
+    }
+}
+task natives {
+    description "Copies native libraries to an appropriate directory."
+    dependsOn platforms.collect { "${it}Natives" }.findAll { tasks[it] }
+}
